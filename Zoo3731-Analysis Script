@@ -1,0 +1,248 @@
+# Natalie-Bru-Zoo3731-Analysis
+R script for Human Anatomy 
+#######################
+## Zoo3731 Data Analysis ##
+#######################
+
+#### RUNNING LIBRARIES ####
+## if no package is found, we need to install the package in the right bottom window (package tab) ##
+
+library(car)
+library(psych)
+library(ggplot2)
+library(gridExtra)
+library(plyr)
+library(base) #iceless
+library(scales)
+
+#### OPENING FILES####
+## To open a csv file: to get the file path, right click on the file and get info ##
+## use the read.csv command, file . choose () , with the file path on quotations. File name with extension is needed ##
+
+file.choose()
+
+ZooFINAL <- read.csv("/Users/NatalieBrunelle/Desktop/Work 2016/ZOO 3731/ZOO3731 ZOO Final.csv")
+
+ZOOLEC <- read.csv("/Users/NatalieBrunelle/Desktop/Work 2016/ZOO 3731/ZOO3731 Clean Lecture Exam CSV.csv")
+
+ZOOLAB <- read.csv("/Users/NatalieBrunelle/Desktop/Work 2016/ZOO 3731/ZOO3731 Clean Lab Exam CSV.csv")
+
+ZOOoverall<- read.csv("/Users/NatalieBrunelle/Desktop/Work 2016/ZOO 3731/Zoo3731 CSV.csv")
+
+Zoocomplete <- read.csv("/Users/NatalieBrunelle/Desktop/Work 2016/ZOO 3731/ZOO3731 Complete Data CSV 1.csv")
+
+ZooLABGrd <- read.csv("/Users/NatalieBrunelle/Desktop/Work 2016/ZOO3731 Lab Data from Panthersoft.csv")
+
+########################
+#### Binding info together ##
+#######################
+
+## Bind by PID and TERM ##
+## Zoo merge 1 ##
+
+Zoomerged1 <- merge(ZOOLAB,ZOOLEC,by= c("PID","TERM"))
+
+Zoomerged2 <- merge(ZOOoverall,ZOOLEC,by= c("PID","TERM"),all.x =TRUE)
+
+ZooFINAL <- merge(Zoomerged2,ZOOLAB,by= c("PID","TERM"),all.x=TRUE)
+
+ZooFINAL <-merge(ZooFINAL,Zoocomplete,by= c("Section.Instructor.Term"))
+
+write.csv(ZooFINAL, "/Users/NatalieBrunelle/Desktop/Work 2016/ZOO 3731/ZOO3731 ZOO Final.csv")
+                  
+table(ZooFINAL$Instr.ID,ZooFINAL$Lab.Grade.x,useNA = "ifany")
+
+str(ZooFINAL)
+str(Zoocomplete)
+str(ZOOLAB)
+
+#############################
+##### Analysis by Graphs ########
+############################
+
+### Box Plot of Reformed vs Traditional for Final Grades #####
+
+boxplot1 <- ggplot(ZooFINAL, aes(x =Course.Type, y = Grd.Pt.Unt )) + 
+  geom_boxplot(fill="lightgoldenrod1", color="navy") + 
+  labs(title= "Distribution of Final Grades in ZOO3731 \n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") +
+  theme(axis.text.x= element_text(colour= "darkblue", angle = 40, size = 12, vjust = 0.6), axis.text.y=element_text(colour = "darkblue", size = 12), title=element_text(colour = "Navy blue", size = 20))
+
+print(boxplot1)
+
+### Bar graph of the average and ST Dev ####### 
+### Summarize the Data #### 
+
+describeBy(ZooFINAL$Grd.Pt.Unt, ZooFINAL$Course.Type)
+m <- ddply(ZooFINAL, c("Course.Type"), summarise, mean=mean(Grd.Pt.Unt),
+           sd=sd(Grd.Pt.Unt), se=sd(Grd.Pt.Unt)/sqrt(length(Grd.Pt.Unt))) 
+###create df with averages by course type, std deviation, and std error###
+
+p <- ggplot(data=m, aes(x=Course.Type, y=mean)) + 
+              geom_bar(stat="identity", position=position_dodge(), fill="Dark Slate Gray 3", width=0.55)
+p <- p + geom_errorbar(position=dodge, width=0.25, aes(ymin=mean-se, ymax=mean+se))
+p <- p + labs(title= " ZOO3731 GPA Averages \n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") 
+p <- p + theme(axis.text.x= element_text(colour= "Cyan 4", angle = 40, size = 12, vjust = 0.6), axis.text.y=element_text(colour = "Dark Slate Gray 4", size = 12), title=element_text(colour = "Dark Slate Gray 4", size = 20))
+p <- p + guides(fill=guide_legend(reverse=T))
+p <- p + scale_x_discrete(labels=c("Reformed", "Traditional"))
+p
+
+print(p)
+
+################
+##### TO DO ####
+###############
+
+#subset command CHECK 
+#redo the summarize data (similar to m) CHECK 
+# to change the x axis labels (search x_scale_discrete or smtg like that) CHECK 
+#analysis: look up lm. linear model predicting Lab grade by different predictors (final grade in lecture, course type)
+#compare between groups (e.g. tests, or final grade) - you can do a t-test (look at workshop notes or online). t.test 
+
+#####################################
+##### Analysis For Lisa Brinns Classes ####
+####################################
+
+n <- ZooFINAL[ which (ZooFINAL$Section.Instructor.Term=='Lisa Brinn-Courtney Elazear'
+n <- subset(ZooFINAL, Instr.ID=='5029436'|Instr.ID=='5063644')
+nrow(n)
+n
+
+#####################################################################
+###Box Plot of Reformed vs Traditional for Final Grades For Lisa Brinn Sections #####
+#####################################################################
+
+p <- ggplot(n, aes(x =Course.Type, y = Grd.Pt.Unt )) + 
+  geom_boxplot(fill="lightgoldenrod1", color="navy") 
+p <- p + labs(title= "Distribution of Final Grades in ZOO3731 for Lisa Brinn \n (Spring '14-'16)", 
+              x="Course Type", y="Grade Point Unit") 
+p <- p + theme(axis.text.x= element_text(colour= "darkblue", angle = 40, size = 12, vjust = 0.6), 
+               axis.text.y=element_text(colour = "darkblue", size = 12), 
+               title=element_text(colour = "Navy blue", size = 20))
+print(p)
+
+describeBy(n, Course.Type)
+nn <- ddply(n, c("Course.Type"), summarise, meanGPU=mean(Grd.Pt.Unt),
+            sdGPU=sd(Grd.Pt.Unt), seGPU=sd(Grd.Pt.Unt)/sqrt(length(Grd.Pt.Unt)))
+nn
+
+p <- ggplot(data=nn, aes(x=Course.Type, y=meanGPU)) + 
+  geom_bar(stat="identity", position=position_dodge(), fill="Dark Slate Gray 3", width=0.55)
+p <- p + geom_errorbar(position=dodge, width=0.25, aes(ymin=mean-se, ymax=mean+se))
+p <- p + labs(title= " ZOO3731 GPA Averages \n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") 
+p <- p + theme(axis.text.x= element_text(colour= "Cyan 4", angle = 40, size = 12, vjust = 0.6), axis.text.y=element_text(colour = "Dark Slate Gray 4", size = 12), title=element_text(colour = "Dark Slate Gray 4", size = 20))
+p
+
+################################################
+###########Changing Variables to Fit Models###########
+################################################
+
+##change the percentages (e.g. 10%) to regular percent nomenclature (e.g. 0.10)##
+
+n$Lab.Grade.y <- as.numeric(sub("%","",n$Lab.Grade.y))/100
+table(n$Lab.Grade.y)
+n$Lab.Grade.x <- as.numeric(sub("%","",n$Lab.Grade.x))/100
+table(n$Lab.Grade.x)
+
+####Variables needed####
+###Lab.Grade.y Lab.Grade.x Course.Type###
+
+lmfit <- lm(as.numeric(Lab.Grade.y) ~ Course.Type+as.numeric(Lab.Grade.x), data=n)
+summary(lmfit)
+
+t.test(n$Lab.Grade.y ~ n$Course.Type)
+
+lmfit <- lm(as.numeric(Lab.Grade.y) ~ Course.Type+as.numeric(Lab.Grade.x), data=n)
+summary(lmfit)
+
+lmfit <- lm(as.numeric(Lab.Grade.y) ~ Course.Type, data=n)
+summary(lmfit)
+
+describeBy(n$Lab.Grade.y, n$TERM)
+table(ZooFINAL$Lab.Grade.x)
+
+#########################
+###Removing Duplicates#####
+#########################
+
+###deduped.data <- unique( yourdata[ , 1:3 ] )####
+## ZooLABGrd ##
+##1. pick the columns that you need (subset by columns): PID, Term, GPU, GradeLt##
+##2. remove duplicates by PID and term. ##
+##3. merge clean data to ZooLab by PID and term. and then zoo final##
+
+z <- c("ID")
+z
+Z <- ZooLABGrd[c("ID","Term","Grade","Grd.Pt.Unt")]
+ls(Z)
+
+Z <- subset(ZooLABGrd,as.numeric("ID")|"Term"|"Name"|as.numeric("Grade")|as.numeric("Grd.Pt.Unt"))
+
+Z <- subset(ZooLABGrd,as.numeric("ID")|"Term"|"Name"|as.numeric("Grade")|as.numeric("Grd.Pt.Unt"))
+Z
+
+ZooLGrades <- unique( Z[ , 1:4])
+
+#############################################
+####Merging Data with Different Column Names######
+###mergedData <- merge(a, b, by.x=c(“colNameA”),###
+############### by.y=c(“colNameB”))#############
+
+ZooL <- merge(ZOOLAB,ZooLGrades,by.x=c("PID","TERM"), by.y=c("ID","Term"))
+
+ZOODATA <- merge(ZooL,ZooFINAL,by =c("PID","TERM"))
+
+
+###################################
+####Changing Column Names in Data ####
+###################################
+
+names(ZOODATA)[names(ZOODATA) =='Lab.Grade.x'] <- 'Course Grade'
+names(ZOODATA)[names(ZOODATA) =='Lab.Grade.y'] <- 'Lab Grade'
+names(ZOODATA)[names(ZOODATA) =='Grade.x'] <- 'Lab Letter Grade'
+names(ZOODATA)[names(ZOODATA) =='Grd.Pt.Unt.x'] <- 'Lab Grd. Pt. Unt.'
+names(ZOODATA)[names(ZOODATA) =='Lab Grd. Pt. Unt.'] <- 'LabGrd.Pt.Unt.'
+names(ZOODATA)[names(ZOODATA) =='Grade.y'] <- 'Course Letter Grade'
+names(ZOODATA)[names(ZOODATA) =='Grd.Pt.Unt.y'] <- 'CourseGrd.Pt.Unt.'
+ZOODATA
+
+ls(ZOODATA)
+
+####################################################
+####Eliminating Repeated Columns or Columns not needed####
+############## Use the command NULL#################
+
+ZOODATA$Name <- NULL 
+ZOODATA$LAST.x<-NULL
+ZOODATA$FIRST.x <- NULL
+ZOODATA$LAST.y<-NULL
+ZOODATA$FIRST.y <- NULL
+ZOODATA$Last<-NULL
+ZOODATA$First.Name <- NULL
+ZOODATA$`Lab Grade` <-NULL
+ZOODATA$E1.y <-NULL
+ZOODATA$E2.y <-NULL
+ZOODATA$E3.y <-NULL
+
+#change the percentages (e.g. 10%) to regular percent nomenclature (e.g. 0.10)
+ZOODATA$Lab.Grade<- as.numeric(sub("%","",ZOODATA$Lab.Grade))/100
+table(ZOODATA$Lab.Grade)
+ZOODATA$CourseGrade <- as.numeric(sub("%","",ZOODATA$CourseGrade))/100
+table(ZOODATA$CourseGrade)
+
+
+ls(ZOODATA)
+
+#####################################
+####Comparing Data using Lmfit Models####
+####################################
+
+lmfit = lm((LabGrd.Pt.Unt. ~ Course.Type + CourseGrade), data=ZOODATA)
+summary(lmfit)
+
+lmfit = lm((LabGrd.Pt.Unt. ~ Course.Type + CourseGrd.Pt.Unt.), data=ZOODATA)
+summary(lmfit)
+
+#################################
+######Comparing Data using T-test####
+#################################
+#compare between groups (e.g. tests, or final grade) - you can do a t-test (look at workshop notes or online). t.test 
