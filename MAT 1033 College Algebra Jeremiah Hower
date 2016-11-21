@@ -1,0 +1,715 @@
+#########################################
+####### Jeremiah Hower ATMI Trig  #######
+#########################################
+
+#################################
+###### *Running Libraries* ########
+#################################
+library(car)
+library(psych)
+library(ggplot2)
+library(gridExtra)
+library(plyr)
+library(base) #iceless
+library(scales)
+library(knitr)
+library(reshape2)
+
+#########################################
+######### Creating Dataframes ###########
+#########################################
+
+####### Opening The Datasheets ##########
+file.choose()
+setwd("/Users/NatalieBrunelle/Desktop/Work_2016/TRIG ATMI ")
+#### Pre ATMI #### 
+PreSummer15<- read.csv("ncsin_Hower_Trig_Pre_Summer15.csv")
+
+#### Post ATMI #### 
+PoSummer15 <-  read.csv("ncsin_Trig_Hower_Summer15_Post.csv")
+
+PoSummer15$Name <- NULL
+
+#### Class Info #### 
+ClassInfoJHTrig <- read.csv("/Users/NatalieBrunelle/Desktop/Work_2016/TRIG ATMI /Trig_Class_Info.csv")
+
+#### Merging Data Sheets ##### 
+TrigATMIdf <- merge(PreSummer15,PoSummer15,by=c("PID","Term"))
+
+TrigATMIdf$Section.x<-NULL
+TrigATMIdf$Section.y<-NULL
+
+###########################################################################
+
+###########################################
+############## Analysis ###################
+###########################################
+
+### Notes for breakdown of Questions ### 
+#### Q1-5 = ATMI enjoyment All Normal
+#### Q6-9 = ATMI motivation All Normal
+#### Q10-14 = ATMI self confidence All Reverse 
+### create recorded variables with reversed scale ### 
+#### Q15-19 = ATMI Value All Normal
+#### Q20-31 = MAth Identity All Normal
+#### Q32-34 = Meta cognition Knowledge (DK)
+#### Q35-37 = Metacognition Knowledge(ck) 
+#### Q38-39 = Metacognition Knowledge(pk) 
+### Q40-41 = Metacognition Regulation (IMS)
+### Q42-43 = Metacognition Regulation (DS)
+### Q44-45 = Metacognition Regulation (M)
+### Q46-48 = Metacognition Regulation (P)
+### Q49-50 = Metacognition Regulation (E)
+
+
+### Recoding Variables with Reversed Scales ### 
+##### Pre ATMI #### 
+## Q10 ### 
+TrigATMIdf$Q10.x.r <-ifelse(TrigATMIdf$Q10.x==1,5,
+                            ifelse(TrigATMIdf$Q10.x==2,4,
+                                   ifelse(TrigATMIdf$Q10.x==3,3,
+                                          ifelse(TrigATMIdf$Q10.x==4,2,
+                                                 ifelse(TrigATMIdf$Q10.x==5,1,NA)))))
+table(TrigATMIdf$Q10.x,TrigATMIdf$Q10.x.r, useNA="always")
+
+## Q11 ### 
+TrigATMIdf$Q11.x.r <-ifelse(TrigATMIdf$Q11.x==1,5,
+                            ifelse(TrigATMIdf$Q11.x==2,4,
+                                   ifelse(TrigATMIdf$Q11.x==3,3,
+                                          ifelse(TrigATMIdf$Q11.x==4,2,
+                                                 ifelse(TrigATMIdf$Q11.x==5,1,NA)))))
+table(TrigATMIdf$Q11.x,TrigATMIdf$Q11.x.r, useNA="always")
+
+
+## Q12 ### 
+TrigATMIdf$Q12.x.r <-ifelse(TrigATMIdf$Q12.x==1,5,
+                            ifelse(TrigATMIdf$Q12.x==2,4,
+                                   ifelse(TrigATMIdf$Q12.x==3,3,
+                                          ifelse(TrigATMIdf$Q12.x==4,2,
+                                                 ifelse(TrigATMIdf$Q12.x==5,1,NA)))))
+table(TrigATMIdf$Q12.x,TrigATMIdf$Q12.x.r, useNA="always")
+
+## Q13 ### 
+TrigATMIdf$Q13.x.r <-ifelse(TrigATMIdf$Q13.x==1,5,
+                            ifelse(TrigATMIdf$Q13.x==2,4,
+                                   ifelse(TrigATMIdf$Q13.x==3,3,
+                                          ifelse(TrigATMIdf$Q13.x==4,2,
+                                                 ifelse(TrigATMIdf$Q13.x==5,1,NA)))))
+table(TrigATMIdf$Q13.x,TrigATMIdf$Q13.x.r, useNA="always")
+
+## Q14 ### 
+TrigATMIdf$Q14.x.r <-ifelse(TrigATMIdf$Q14.x==1,5,
+                            ifelse(TrigATMIdf$Q14.x==2,4,
+                                   ifelse(TrigATMIdf$Q14.x==3,3,
+                                          ifelse(TrigATMIdf$Q14.x==4,2,
+                                                 ifelse(TrigATMIdf$Q14.x==5,1,NA)))))
+table(TrigATMIdf$Q14.x,TrigATMIdf$Q14.x.r, useNA="always")
+
+
+##### Post ATMI #### 
+## Q10 ### 
+TrigATMIdf$Q10.y.r <-ifelse(TrigATMIdf$Q10.y==1,5,
+                            ifelse(TrigATMIdf$Q10.y==2,4,
+                                   ifelse(TrigATMIdf$Q10.y==3,3,
+                                          ifelse(TrigATMIdf$Q10.y==4,2,
+                                                 ifelse(TrigATMIdf$Q10.y==5,1,NA)))))
+table(TrigATMIdf$Q10.y,TrigATMIdf$Q10.y.r, useNA="always")
+
+## Q11 ### 
+TrigATMIdf$Q11.y.r <-ifelse(TrigATMIdf$Q11.y==1,5,
+                            ifelse(TrigATMIdf$Q11.y==2,4,
+                                   ifelse(TrigATMIdf$Q11.y==3,3,
+                                          ifelse(TrigATMIdf$Q11.y==4,2,
+                                                 ifelse(TrigATMIdf$Q11.y==5,1,NA)))))
+table(TrigATMIdf$Q11.y,TrigATMIdf$Q11.y.r, useNA="always")
+
+
+## Q12 ### 
+TrigATMIdf$Q12.y.r <-ifelse(TrigATMIdf$Q12.y==1,5,
+                            ifelse(TrigATMIdf$Q12.y==2,4,
+                                   ifelse(TrigATMIdf$Q12.y==3,3,
+                                          ifelse(TrigATMIdf$Q12.y==4,2,
+                                                 ifelse(TrigATMIdf$Q12.y==5,1,NA)))))
+table(TrigATMIdf$Q12.y,TrigATMIdf$Q12.y.r, useNA="always")
+
+## Q13 ### 
+TrigATMIdf$Q13.y.r <-ifelse(TrigATMIdf$Q13.y==1,5,
+                            ifelse(TrigATMIdf$Q13.y==2,4,
+                                   ifelse(TrigATMIdf$Q13.y==3,3,
+                                          ifelse(TrigATMIdf$Q13.y==4,2,
+                                                 ifelse(TrigATMIdf$Q13.y==5,1,NA)))))
+table(TrigATMIdf$Q13.y,TrigATMIdf$Q13.y.r, useNA="always")
+
+## Q14 ### 
+TrigATMIdf$Q14.y.r <-ifelse(TrigATMIdf$Q14.y==1,5,
+                            ifelse(TrigATMIdf$Q14.y==2,4,
+                                   ifelse(TrigATMIdf$Q14.y==3,3,
+                                          ifelse(TrigATMIdf$Q14.y==4,2,
+                                                 ifelse(TrigATMIdf$Q14.y==5,1,NA)))))
+table(TrigATMIdf$Q14.y,TrigATMIdf$Q14.y.r, useNA="always")
+
+### Recoding Blanks and Astericks #### 
+TrigATMIdf$Q1.x.r<-ifelse(TrigATMIdf$Q1.x<6,TrigATMIdf$Q1.x,NA)
+table(TrigATMIdf$Q1.x, TrigATMIdf$Q1.x.r, useNA="always")
+
+TrigATMIdf$Q2.x.r<-ifelse(TrigATMIdf$Q2.x<6,TrigATMIdf$Q2.x,NA)
+table(TrigATMIdf$Q2.x, TrigATMIdf$Q2.x.r, useNA="always")
+
+TrigATMIdf$Q3.x.r<-ifelse(TrigATMIdf$Q3.x<6,TrigATMIdf$Q3.x,NA)
+table(TrigATMIdf$Q3.x, TrigATMIdf$Q3.x.r, useNA="always")
+
+TrigATMIdf$Q4.x.r<-ifelse(TrigATMIdf$Q4.x<6,TrigATMIdf$Q4.x,NA)
+table(TrigATMIdf$Q4.x, TrigATMIdf$Q4.x.r, useNA="always")
+
+TrigATMIdf$Q4.x.r<- as.integer(TrigATMIdf$Q4.x.r)
+
+TrigATMIdf$Q5.x.r<-ifelse(TrigATMIdf$Q5.x<6,TrigATMIdf$Q5.x,NA)
+table(TrigATMIdf$Q5.x, TrigATMIdf$Q5.x.r, useNA="always")
+
+TrigATMIdf$Q6.x.r<-ifelse(TrigATMIdf$Q6.x<6,TrigATMIdf$Q6.x,NA)
+table(TrigATMIdf$Q6.x, TrigATMIdf$Q6.x.r, useNA="always")
+
+TrigATMIdf$Q7.x.r<-ifelse(TrigATMIdf$Q7.x<6,TrigATMIdf$Q7.x,NA)
+table(TrigATMIdf$Q7.x, TrigATMIdf$Q7.x.r, useNA="always")
+
+TrigATMIdf$Q8.x.r<-ifelse(TrigATMIdf$Q8.x<6,TrigATMIdf$Q8.x,NA)
+table(TrigATMIdf$Q8.x, TrigATMIdf$Q8.x.r, useNA="always")
+
+TrigATMIdf$Q9.x.r<-ifelse(TrigATMIdf$Q9.x<6,TrigATMIdf$Q9.x,NA)
+table(TrigATMIdf$Q9.x, TrigATMIdf$Q9.x.r, useNA="always")
+
+TrigATMIdf$Q15.x.r<-ifelse(TrigATMIdf$Q15.x<6,TrigATMIdf$Q15.x,NA)
+table(TrigATMIdf$Q15.x, TrigATMIdf$Q15.x.r, useNA="always")
+
+TrigATMIdf$Q15.x.r<- as.integer(TrigATMIdf$Q15.x.r)
+
+TrigATMIdf$Q16.x.r<-ifelse(TrigATMIdf$Q16.x<6,TrigATMIdf$Q16.x,NA)
+table(TrigATMIdf$Q16.x, TrigATMIdf$Q16.x.r, useNA="always")
+
+TrigATMIdf$Q17.x.r<-ifelse(TrigATMIdf$Q17.x<6,TrigATMIdf$Q17.x,NA)
+table(TrigATMIdf$Q17.x, TrigATMIdf$Q17.x.r, useNA="always")
+
+TrigATMIdf$Q18.x.r<-ifelse(TrigATMIdf$Q18.x<6,TrigATMIdf$Q18.x,NA)
+table(TrigATMIdf$Q18.x, TrigATMIdf$Q18.x.r, useNA="always")
+
+TrigATMIdf$Q19.x.r<-ifelse(TrigATMIdf$Q19.x<6,TrigATMIdf$Q19.x,NA)
+table(TrigATMIdf$Q19.x, TrigATMIdf$Q19.x.r, useNA="always")
+
+TrigATMIdf$Q20.x.r<-ifelse(TrigATMIdf$Q20.x<6,TrigATMIdf$Q20.x,NA)
+table(TrigATMIdf$Q20.x, TrigATMIdf$Q20.x.r, useNA="always")
+
+TrigATMIdf$Q21.x.r<-ifelse(TrigATMIdf$Q21.x<6,TrigATMIdf$Q21.x,NA)
+table(TrigATMIdf$Q21.x, TrigATMIdf$Q21.x.r, useNA="always")
+
+TrigATMIdf$Q22.x.r<-ifelse(TrigATMIdf$Q22.x<6,TrigATMIdf$Q22.x,NA)
+table(TrigATMIdf$Q22.x, TrigATMIdf$Q22.x.r, useNA="always")
+
+TrigATMIdf$Q23.x.r<-ifelse(TrigATMIdf$Q23.x<6,TrigATMIdf$Q23.x,NA)
+table(TrigATMIdf$Q23.x, TrigATMIdf$Q23.x.r, useNA="always")
+
+TrigATMIdf$Q23.x.r<- as.integer(TrigATMIdf$Q23.x.r)
+
+TrigATMIdf$Q24.x.r<-ifelse(TrigATMIdf$Q24.x<6,TrigATMIdf$Q24.x,NA)
+table(TrigATMIdf$Q24.x, TrigATMIdf$Q24.x.r, useNA="always")
+
+TrigATMIdf$Q25.x.r<-ifelse(TrigATMIdf$Q25.x<6,TrigATMIdf$Q25.x,NA)
+table(TrigATMIdf$Q25.x, TrigATMIdf$Q25.x.r, useNA="always")
+
+TrigATMIdf$Q26.x.r<-ifelse(TrigATMIdf$Q26.x<6,TrigATMIdf$Q26.x,NA)
+table(TrigATMIdf$Q26.x, TrigATMIdf$Q26.x.r, useNA="always")
+
+TrigATMIdf$Q26.x.r<- as.integer(TrigATMIdf$Q26.x.r)
+
+TrigATMIdf$Q27.x.r<-ifelse(TrigATMIdf$Q27.x<6,TrigATMIdf$Q27.x,NA)
+table(TrigATMIdf$Q27.x, TrigATMIdf$Q27.x.r, useNA="always")
+
+TrigATMIdf$Q27.x.r<- as.integer(TrigATMIdf$Q27.x.r)
+
+TrigATMIdf$Q28.x.r<-ifelse(TrigATMIdf$Q28.x<6,TrigATMIdf$Q28.x,NA)
+table(TrigATMIdf$Q28.x, TrigATMIdf$Q28.x.r, useNA="always")
+
+TrigATMIdf$Q29.x.r<-ifelse(TrigATMIdf$Q29.x<6,TrigATMIdf$Q29.x,NA)
+table(TrigATMIdf$Q29.x, TrigATMIdf$Q29.x.r, useNA="always")
+
+TrigATMIdf$Q30.x.r<-ifelse(TrigATMIdf$Q30.x<6,TrigATMIdf$Q30.x,NA)
+table(TrigATMIdf$Q30.x, TrigATMIdf$Q30.x.r, useNA="always")
+
+TrigATMIdf$Q31.x.r<-ifelse(TrigATMIdf$Q31.x<6,TrigATMIdf$Q31.x,NA)
+table(TrigATMIdf$Q31.x, TrigATMIdf$Q31.x.r, useNA="always")
+
+TrigATMIdf$Q31.x.r<- as.integer(TrigATMIdf$Q31.x.r)
+
+TrigATMIdf$Q32.x.r<-ifelse(TrigATMIdf$Q32.x<6,TrigATMIdf$Q32.x,NA)
+table(TrigATMIdf$Q32.x, TrigATMIdf$Q32.x.r, useNA="always")
+
+TrigATMIdf$Q33.x.r<-ifelse(TrigATMIdf$Q33.x<6,TrigATMIdf$Q33.x,NA)
+table(TrigATMIdf$Q33.x, TrigATMIdf$Q33.x.r, useNA="always")
+
+TrigATMIdf$Q34.x.r<-ifelse(TrigATMIdf$Q34.x<6,TrigATMIdf$Q34.x,NA)
+table(TrigATMIdf$Q34.x, TrigATMIdf$Q34.x.r, useNA="always")
+
+TrigATMIdf$Q35.x.r<-ifelse(TrigATMIdf$Q35.x<6,TrigATMIdf$Q35.x,NA)
+table(TrigATMIdf$Q35.x, TrigATMIdf$Q35.x.r, useNA="always")
+
+TrigATMIdf$Q36.x.r<-ifelse(TrigATMIdf$Q36.x<6,TrigATMIdf$Q36.x,NA)
+table(TrigATMIdf$Q36.x, TrigATMIdf$Q36.x.r, useNA="always")
+
+TrigATMIdf$Q37.x.r<-ifelse(TrigATMIdf$Q37.x<6,TrigATMIdf$Q37.x,NA)
+table(TrigATMIdf$Q37.x, TrigATMIdf$Q37.x.r, useNA="always")
+
+TrigATMIdf$Q38.x.r<-ifelse(TrigATMIdf$Q38.x<6,TrigATMIdf$Q38.x,NA)
+table(TrigATMIdf$Q38.x, TrigATMIdf$Q38.x.r, useNA="always")
+
+TrigATMIdf$Q39.x.r<-ifelse(TrigATMIdf$Q39.x<6,TrigATMIdf$Q39.x,NA)
+table(TrigATMIdf$Q39.x, TrigATMIdf$Q39.x.r, useNA="always")
+
+
+TrigATMIdf$Q40.x.r<-ifelse(TrigATMIdf$Q40.x<6,TrigATMIdf$Q40.x,NA)
+table(TrigATMIdf$Q40.x, TrigATMIdf$Q40.x.r, useNA="always")
+
+TrigATMIdf$Q41.x.r<-ifelse(TrigATMIdf$Q41.x<6,TrigATMIdf$Q41.x,NA)
+table(TrigATMIdf$Q41.x, TrigATMIdf$Q41.x.r, useNA="always")
+
+TrigATMIdf$Q42.x.r<-ifelse(TrigATMIdf$Q42.x<6,TrigATMIdf$Q42.x,NA)
+table(TrigATMIdf$Q42.x, TrigATMIdf$Q42.x.r, useNA="always")
+
+TrigATMIdf$Q43.x.r<-ifelse(TrigATMIdf$Q43.x<6,TrigATMIdf$Q43.x,NA)
+table(TrigATMIdf$Q43.x, TrigATMIdf$Q43.x.r, useNA="always")
+
+TrigATMIdf$Q44.x.r<-ifelse(TrigATMIdf$Q44.x<6,TrigATMIdf$Q44.x,NA)
+table(TrigATMIdf$Q44.x, TrigATMIdf$Q44.x.r, useNA="always")
+
+TrigATMIdf$Q45.x.r<-ifelse(TrigATMIdf$Q45.x<6,TrigATMIdf$Q45.x,NA)
+table(TrigATMIdf$Q45.x, TrigATMIdf$Q45.x.r, useNA="always")
+
+TrigATMIdf$Q46.x.r<-ifelse(TrigATMIdf$Q46.x<6,TrigATMIdf$Q46.x,NA)
+table(TrigATMIdf$Q46.x, TrigATMIdf$Q46.x.r, useNA="always")
+
+TrigATMIdf$Q47.x.r<-ifelse(TrigATMIdf$Q47.x<6,TrigATMIdf$Q47.x,NA)
+table(TrigATMIdf$Q47.x, TrigATMIdf$Q47.x.r, useNA="always")
+
+TrigATMIdf$Q48.x.r<-ifelse(TrigATMIdf$Q48.x<6,TrigATMIdf$Q48.x,NA)
+table(TrigATMIdf$Q48.x, TrigATMIdf$Q48.x.r, useNA="always")
+
+TrigATMIdf$Q49.x.r<-ifelse(TrigATMIdf$Q49.x<6,TrigATMIdf$Q49.x,NA)
+table(TrigATMIdf$Q49.x, TrigATMIdf$Q49.x.r, useNA="always")
+
+TrigATMIdf$Q50.x.r<-ifelse(TrigATMIdf$Q50.x<6,TrigATMIdf$Q50.x,NA)
+table(TrigATMIdf$Q50.x, TrigATMIdf$Q50.x.r, useNA="always")
+
+### Ys### 
+### Recoding Blanks and Astericks #### 
+TrigATMIdf$Q1.y.r<-ifelse(TrigATMIdf$Q1.y<6,TrigATMIdf$Q1.y,NA)
+table(TrigATMIdf$Q1.y, TrigATMIdf$Q1.y.r, useNA="always")
+
+TrigATMIdf$Q2.y.r<-ifelse(TrigATMIdf$Q2.y<6,TrigATMIdf$Q2.y,NA)
+table(TrigATMIdf$Q2.y, TrigATMIdf$Q2.y.r, useNA="always")
+
+TrigATMIdf$Q3.y.r<-ifelse(TrigATMIdf$Q3.y<6,TrigATMIdf$Q3.y,NA)
+table(TrigATMIdf$Q3.y, TrigATMIdf$Q3.y.r, useNA="always")
+
+TrigATMIdf$Q4.y.r<-ifelse(TrigATMIdf$Q4.y<6,TrigATMIdf$Q4.y,NA)
+table(TrigATMIdf$Q4.y, TrigATMIdf$Q4.y.r, useNA="always")
+
+TrigATMIdf$Q5.y.r<-ifelse(TrigATMIdf$Q5.y<6,TrigATMIdf$Q5.y,NA)
+table(TrigATMIdf$Q5.y, TrigATMIdf$Q5.y.r, useNA="always")
+
+TrigATMIdf$Q6.y.r<-ifelse(TrigATMIdf$Q6.y<6,TrigATMIdf$Q6.y,NA)
+table(TrigATMIdf$Q6.y, TrigATMIdf$Q6.y.r, useNA="always")
+
+TrigATMIdf$Q7.y.r<-ifelse(TrigATMIdf$Q7.y<6,TrigATMIdf$Q7.y,NA)
+table(TrigATMIdf$Q7.y, TrigATMIdf$Q7.y.r, useNA="always")
+
+TrigATMIdf$Q8.y.r<-ifelse(TrigATMIdf$Q8.y<6,TrigATMIdf$Q8.y,NA)
+table(TrigATMIdf$Q8.y, TrigATMIdf$Q8.y.r, useNA="always")
+
+TrigATMIdf$Q9.y.r<-ifelse(TrigATMIdf$Q9.y<6,TrigATMIdf$Q9.y,NA)
+table(TrigATMIdf$Q9.y, TrigATMIdf$Q9.y.r, useNA="always")
+
+TrigATMIdf$Q15.y.r<-ifelse(TrigATMIdf$Q15.y<6,TrigATMIdf$Q15.y,NA)
+table(TrigATMIdf$Q15.y, TrigATMIdf$Q15.y.r, useNA="always")
+
+TrigATMIdf$Q16.y.r<-ifelse(TrigATMIdf$Q16.y<6,TrigATMIdf$Q16.y,NA)
+table(TrigATMIdf$Q16.y, TrigATMIdf$Q16.y.r, useNA="always")
+
+TrigATMIdf$Q16.y.r<- as.integer(TrigATMIdf$Q16.y.r)
+
+TrigATMIdf$Q17.y.r<-ifelse(TrigATMIdf$Q17.y<6,TrigATMIdf$Q17.y,NA)
+table(TrigATMIdf$Q17.y, TrigATMIdf$Q17.y.r, useNA="always")
+
+TrigATMIdf$Q18.y.r<-ifelse(TrigATMIdf$Q18.y<6,TrigATMIdf$Q18.y,NA)
+table(TrigATMIdf$Q18.y, TrigATMIdf$Q18.y.r, useNA="always")
+
+TrigATMIdf$Q19.y.r<-ifelse(TrigATMIdf$Q19.y<6,TrigATMIdf$Q19.y,NA)
+table(TrigATMIdf$Q19.y, TrigATMIdf$Q19.y.r, useNA="always")
+
+TrigATMIdf$Q20.y.r<-ifelse(TrigATMIdf$Q20.y<6,TrigATMIdf$Q20.y,NA)
+table(TrigATMIdf$Q20.y, TrigATMIdf$Q20.y.r, useNA="always")
+
+TrigATMIdf$Q21.y.r<-ifelse(TrigATMIdf$Q21.y<6,TrigATMIdf$Q21.y,NA)
+table(TrigATMIdf$Q21.y, TrigATMIdf$Q21.y.r, useNA="always")
+
+TrigATMIdf$Q22.y.r<-ifelse(TrigATMIdf$Q22.y<6,TrigATMIdf$Q22.y,NA)
+table(TrigATMIdf$Q22.y, TrigATMIdf$Q22.y.r, useNA="always")
+
+TrigATMIdf$Q23.y.r<-ifelse(TrigATMIdf$Q23.y<6,TrigATMIdf$Q23.y,NA)
+table(TrigATMIdf$Q23.y, TrigATMIdf$Q23.y.r, useNA="always")
+
+TrigATMIdf$Q24.y.r<-ifelse(TrigATMIdf$Q24.y<6,TrigATMIdf$Q24.y,NA)
+table(TrigATMIdf$Q24.y, TrigATMIdf$Q24.y.r, useNA="always")
+
+TrigATMIdf$Q25.y.r<-ifelse(TrigATMIdf$Q25.y<6,TrigATMIdf$Q25.y,NA)
+table(TrigATMIdf$Q25.y, TrigATMIdf$Q25.y.r, useNA="always")
+
+TrigATMIdf$Q26.y.r<-ifelse(TrigATMIdf$Q26.y<6,TrigATMIdf$Q26.y,NA)
+table(TrigATMIdf$Q26.y, TrigATMIdf$Q26.y.r, useNA="always")
+
+TrigATMIdf$Q27.y.r<-ifelse(TrigATMIdf$Q27.y<6,TrigATMIdf$Q27.y,NA)
+table(TrigATMIdf$Q27.y, TrigATMIdf$Q27.y.r, useNA="always")
+
+TrigATMIdf$Q28.y.r<-ifelse(TrigATMIdf$Q28.y<6,TrigATMIdf$Q28.y,NA)
+table(TrigATMIdf$Q28.y, TrigATMIdf$Q28.y.r, useNA="always")
+
+TrigATMIdf$Q29.y.r<-ifelse(TrigATMIdf$Q29.y<6,TrigATMIdf$Q29.y,NA)
+table(TrigATMIdf$Q29.y, TrigATMIdf$Q29.y.r, useNA="always")
+
+TrigATMIdf$Q30.y.r<-ifelse(TrigATMIdf$Q30.y<6,TrigATMIdf$Q30.y,NA)
+table(TrigATMIdf$Q30.y, TrigATMIdf$Q30.y.r, useNA="always")
+
+TrigATMIdf$Q31.y.r<-ifelse(TrigATMIdf$Q31.y<6,TrigATMIdf$Q31.y,NA)
+table(TrigATMIdf$Q31.y, TrigATMIdf$Q31.y.r, useNA="always")
+
+TrigATMIdf$Q32.y.r<-ifelse(TrigATMIdf$Q32.y<6,TrigATMIdf$Q32.y,NA)
+table(TrigATMIdf$Q32.y, TrigATMIdf$Q32.y.r, useNA="always")
+
+TrigATMIdf$Q33.y.r<-ifelse(TrigATMIdf$Q33.y<6,TrigATMIdf$Q33.y,NA)
+table(TrigATMIdf$Q33.y, TrigATMIdf$Q33.y.r, useNA="always")
+
+TrigATMIdf$Q34.y.r<-ifelse(TrigATMIdf$Q34.y<6,TrigATMIdf$Q34.y,NA)
+table(TrigATMIdf$Q34.y, TrigATMIdf$Q34.y.r, useNA="always")
+
+TrigATMIdf$Q35.y.r<-ifelse(TrigATMIdf$Q35.y<6,TrigATMIdf$Q35.y,NA)
+table(TrigATMIdf$Q35.y, TrigATMIdf$Q35.y.r, useNA="always")
+
+TrigATMIdf$Q36.y.r<-ifelse(TrigATMIdf$Q36.y<6,TrigATMIdf$Q36.y,NA)
+table(TrigATMIdf$Q36.y, TrigATMIdf$Q36.y.r, useNA="always")
+
+TrigATMIdf$Q37.y.r<-ifelse(TrigATMIdf$Q37.y<6,TrigATMIdf$Q37.y,NA)
+table(TrigATMIdf$Q37.y, TrigATMIdf$Q37.y.r, useNA="always")
+
+TrigATMIdf$Q38.y.r<-ifelse(TrigATMIdf$Q38.y<6,TrigATMIdf$Q38.y,NA)
+table(TrigATMIdf$Q38.y, TrigATMIdf$Q38.y.r, useNA="always")
+
+TrigATMIdf$Q39.y.r<-ifelse(TrigATMIdf$Q39.y<6,TrigATMIdf$Q39.y,NA)
+table(TrigATMIdf$Q39.y, TrigATMIdf$Q39.y.r, useNA="always")
+
+TrigATMIdf$Q40.y.r<-ifelse(TrigATMIdf$Q40.y<6,TrigATMIdf$Q40.y,NA)
+table(TrigATMIdf$Q40.y, TrigATMIdf$Q40.y.r, useNA="always")
+
+TrigATMIdf$Q41.y.r<-ifelse(TrigATMIdf$Q41.y<6,TrigATMIdf$Q41.y,NA)
+table(TrigATMIdf$Q41.y, TrigATMIdf$Q41.y.r, useNA="always")
+
+TrigATMIdf$Q42.y.r<-ifelse(TrigATMIdf$Q42.y<6,TrigATMIdf$Q42.y,NA)
+table(TrigATMIdf$Q42.y, TrigATMIdf$Q42.y.r, useNA="always")
+
+TrigATMIdf$Q43.y.r<-ifelse(TrigATMIdf$Q43.y<6,TrigATMIdf$Q43.y,NA)
+table(TrigATMIdf$Q43.y, TrigATMIdf$Q43.y.r, useNA="always")
+
+TrigATMIdf$Q44.y.r<-ifelse(TrigATMIdf$Q44.y<6,TrigATMIdf$Q44.y,NA)
+table(TrigATMIdf$Q44.y, TrigATMIdf$Q44.y.r, useNA="always")
+
+TrigATMIdf$Q45.y.r<-ifelse(TrigATMIdf$Q45.y<6,TrigATMIdf$Q45.y,NA)
+table(TrigATMIdf$Q45.y, TrigATMIdf$Q45.y.r, useNA="always")
+
+TrigATMIdf$Q46.y.r<-ifelse(TrigATMIdf$Q46.y<6,TrigATMIdf$Q46.y,NA)
+table(TrigATMIdf$Q46.y, TrigATMIdf$Q46.y.r, useNA="always")
+
+TrigATMIdf$Q47.y.r<-ifelse(TrigATMIdf$Q47.y<6,TrigATMIdf$Q47.y,NA)
+table(TrigATMIdf$Q47.y, TrigATMIdf$Q47.y.r, useNA="always")
+
+TrigATMIdf$Q48.y.r<-ifelse(TrigATMIdf$Q48.y<6,TrigATMIdf$Q48.y,NA)
+table(TrigATMIdf$Q48.y, TrigATMIdf$Q48.y.r, useNA="always")
+
+TrigATMIdf$Q49.y.r<-ifelse(TrigATMIdf$Q49.y<6,TrigATMIdf$Q49.y,NA)
+table(TrigATMIdf$Q49.y, TrigATMIdf$Q49.y.r, useNA="always")
+
+TrigATMIdf$Q50.y.r<-ifelse(TrigATMIdf$Q50.y<6,TrigATMIdf$Q50.y,NA)
+table(TrigATMIdf$Q50.y, TrigATMIdf$Q50.y.r, useNA="always")
+
+##############################################################
+
+write.csv(TrigATMIdf, "TrigATMIdf.csv")
+write.csv(TrigATMIdf_full, "TrigATMIdf_full.csv")
+TrigATMIdf_full <- read.csv("TrigATMIdf.csv")
+TrigATMIdf <- TrigATMIdf_full[,c(1:4,104:205)]
+ls(TrigATMIdf)
+
+#### Creating Variables for the ATMI Constructs ### 
+### Notes for breakdown of Questions ### 
+
+## PRE
+#### Q1-5 = ATMI enjoyment All Normal
+TrigATMIdf$ATMI.E.pre <-rowSums(TrigATMIdf[,c('Q1.x.r','Q2.x.r','Q3.x.r','Q4.x.r','Q5.x.r')],na.rm=TRUE)
+table(TrigATMIdf$ATMI.E.pre)
+
+#### Q6-9 = ATMI motivation All Normal
+TrigATMIdf$ATMI.M.pre <-rowSums(TrigATMIdf[,c('Q6.x.r','Q7.x.r','Q8.x.r','Q9.x.r')],na.rm=TRUE)
+table(TrigATMIdf$ATMI.M.pre)
+
+#### Q10-14 = ATMI self confidence All Reverse 
+TrigATMIdf$ATMI.SC.pre <-rowSums(TrigATMIdf[,c('Q10.x.r','Q11.x.r','Q12.x.r','Q13.x.r','Q14.x.r')],na.rm=TRUE)
+table(TrigATMIdf$ATMI.SC.pre)
+
+
+################################# HOW TO FIND WHAT COLLUMN NUMBER IS A VARIABLE
+which( colnames(TrigATMIdf_full)=="Q10.x.r" )
+
+str(TrigATMIdf)
+#### Q15-19 = ATMI Value All Normal
+TrigATMIdf$ATMI.V.pre <-rowSums(TrigATMIdf[,c('Q15.x.r','Q16.x.r','Q17.x.r','Q18.x.r','Q19.x.r')],na.rm=TRUE)
+table(TrigATMIdf$ATMI.V.pre)
+
+#### Q20-31 = MAth Identity All Normal
+TrigATMIdf$MathId.pre <-rowSums(TrigATMIdf[,c('Q20.x.r','Q21.x.r','Q22.x.r','Q23.x.r','Q24.x.r','Q25.x.r','Q26.x.r','Q27.x.r','Q28.x.r','Q29.x.r','Q30.x.r','Q31.x.r')],na.rm=TRUE)
+table(TrigATMIdf$MathId.pre)
+
+#### Q32-39 = Meta cognition Knowledge
+TrigATMIdf$Metacog.K.pre <-rowSums(TrigATMIdf[,c('Q32.x.r','Q33.x.r','Q34.x.r','Q35.x.r','Q36.x.r','Q37.x.r','Q38.x.r','Q39.x.r')],na.rm=TRUE)
+table(TrigATMIdf$Metacog.K.pre)
+
+### Q40-50 = Metacognition Regulation
+TrigATMIdf$Metacog.R.pre <-rowSums(TrigATMIdf[,c('Q40.x.r','Q41.x.r','Q42.x.r','Q43.x.r','Q44.x.r','Q45.x.r','Q46.x.r','Q47.x.r','Q48.x.r','Q49.x.r','Q50.x.r')],na.rm=TRUE)
+table(TrigATMIdf$Metacog.R.pre)
+
+
+#### POST
+#### Q1-5 = ATMI enjoyment All Normal
+TrigATMIdf$ATMI.E.post <-rowSums(TrigATMIdf[,c('Q1.y.r','Q2.y.r','Q3.y.r','Q4.y.r','Q5.y.r')],na.rm=TRUE)
+table(TrigATMIdf$ATMI.E.post)
+
+#### Q6-9 = ATMI motivation All Normal
+TrigATMIdf$ATMI.M.post <-rowSums(TrigATMIdf[,c('Q6.y.r','Q7.y.r','Q8.y.r','Q9.y.r')],na.rm=TRUE)
+table(TrigATMIdf$ATMI.M.post)
+
+#### Q10-14 = ATMI self confidence All Reverse 
+TrigATMIdf$ATMI.SC.post <-rowSums(TrigATMIdf[,c('Q10.y.r','Q11.y.r','Q12.y.r','Q13.y.r','Q14.y.r')],na.rm=TRUE)
+table(TrigATMIdf$ATMI.SC.post)
+
+#### Q15-19 = ATMI Value All Normal
+TrigATMIdf$ATMI.V.post <-rowSums(TrigATMIdf[,c('Q15.y.r','Q16.y.r','Q17.y.r','Q18.y.r','Q19.y.r')],na.rm=TRUE)
+table(TrigATMIdf$ATMI.V.post)
+
+#### Q20-31 = MAth Identity All Normal
+TrigATMIdf$MathId.post <-rowSums(TrigATMIdf[,c('Q20.y.r','Q21.y.r','Q22.y.r','Q23.y.r','Q24.y.r','Q25.y.r','Q26.y.r','Q27.y.r','Q28.y.r','Q29.y.r','Q30.y.r','Q31.y.r')],na.rm=TRUE)
+table(TrigATMIdf$MathId.post)
+
+#### Q32-39 = Meta cognition Knowledge
+TrigATMIdf$Metacog.K.post <-rowSums(TrigATMIdf[,c('Q32.y.r','Q33.y.r','Q34.y.r','Q35.y.r','Q36.y.r','Q37.y.r','Q38.y.r','Q39.y.r')],na.rm=TRUE)
+table(TrigATMIdf$Metacog.K.post)
+
+### Q40-50 = Metacognition Regulation
+TrigATMIdf$Metacog.R.post <-rowSums(TrigATMIdf[,c('Q40.y.r','Q41.y.r','Q42.y.r','Q43.y.r','Q44.y.r','Q45.y.r','Q46.y.r','Q47.y.r','Q48.y.r','Q49.y.r','Q50.y.r')],na.rm=TRUE)
+table(TrigATMIdf$Metacog.R.post)
+
+###################
+
+## Overall ATMI Pre
+TrigATMIdf$OverallATMIpre <- with(TrigATMIdf, (ATMI.V.pre+ATMI.M.pre+ATMI.E.pre+ATMI.SC.pre))
+
+TrigATMIdf[,c("OverallATMIpre","ATMI.V.pre", "ATMI.M.pre","ATMI.E.pre","ATMI.SC.pre")]
+
+## Overall ATMI Post 
+TrigATMIdf$OverallATMIpost <- with(TrigATMIdf,(ATMI.V.post+ATMI.M.post+ATMI.E.post+ATMI.SC.post))
+
+TrigATMIdf[,c("OverallATMIpost","ATMI.V.post", "ATMI.M.post","ATMI.E.post","ATMI.SC.post")]
+
+##NORMALIZED GAINS
+### First Create and Overall Atmi Pre, O A Post, adding EMSCV,
+#### 2. NG for that overall and follow the formula 
+TrigATMIdf$ATMI.E.ng <- ifelse(TrigATMIdf$ATMI.E.pre<25,((TrigATMIdf$ATMI.E.post - TrigATMIdf$ATMI.E.pre)/(25-TrigATMIdf$ATMI.E.pre))*100, NA) 
+TrigATMIdf$ATMI.M.ng <- ifelse(TrigATMIdf$ATMI.M.pre<20,((TrigATMIdf$ATMI.M.post - TrigATMIdf$ATMI.M.pre)/(20-TrigATMIdf$ATMI.M.pre))*100, NA) 
+TrigATMIdf$ATMI.SC.ng <- ifelse(TrigATMIdf$ATMI.SC.pre<25,((TrigATMIdf$ATMI.SC.post - TrigATMIdf$ATMI.SC.pre)/(25-TrigATMIdf$ATMI.SC.pre))*100, NA) 
+TrigATMIdf$ATMI.V.ng <- ifelse(TrigATMIdf$ATMI.V.pre<25,((TrigATMIdf$ATMI.V.post - TrigATMIdf$ATMI.V.pre)/(25-TrigATMIdf$ATMI.V.pre))*100, NA) 
+
+TrigATMIdf$MathId.ng <- ifelse(TrigATMIdf$MathId.pre<60, ((TrigATMIdf$MathId.post - TrigATMIdf$MathId.pre)/(60-TrigATMIdf$MathId.pre))*100, NA) 
+
+TrigATMIdf$MetK.ng <- ifelse(TrigATMIdf$MathId.pre<40, ((TrigATMIdf$Metacog.K.post - TrigATMIdf$Metacog.K.pre)/(40-TrigATMIdf$MMetacog.K.pre))*100, NA) 
+TrigATMIdf$MetR.ng <- ifelse(TrigATMIdf$MathId.pre<55, ((TrigATMIdf$Metacog.R.post - TrigATMIdf$Metacog.R.pre)/(55-TrigATMIdf$Metacog.R.pre))*100, NA) 
+
+######################################
+##### Making an OveralL Normalized Gain #### 
+TrigATMIdf$OverallATMI.ng <- ifelse(TrigATMIdf$OverallATMIpre<95, ((TrigATMIdf$OverallATMIpost - TrigATMIdf$OverallATMIpre)/(95-TrigATMIdf$OverallATMIpre))*100, NA)
+
+TrigATMIdf[,c("OverallATMIpre","OverallATMIpost","OverallATMI.ng")]
+
+table(TrigATMIdf$MathId.ng , useNA="always")
+
+describeBy(TrigATMIdf$MathId.ng)
+
+#=======================================================================================
+##GRAPHS##
+##### Go here?!#### 
+## ATMI pre and post
+#ATMI pre bargraph
+m <- ddply(TrigATMIdf, "Term", summarise, meanE = mean(ATMI.E.pre, na.rm=TRUE),
+           meanM = mean(ATMI.M.pre, na.rm=TRUE), 
+           meanSC = mean(ATMI.E.pre, na.rm=TRUE),
+           meanV = mean(ATMI.V.pre, na.rm=TRUE))
+m$id <- "pre"
+
+l <- melt(m[,c("Term","meanE","meanM","meanSC","meanV","id")], id.vars=c("Term","id"))
+
+ggplot(l, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)
+
+#ATMI post bargraph
+n <- ddply(TrigATMIdf, "Term", summarise, meanE = mean(ATMI.E.post, na.rm=TRUE),
+           meanM = mean(ATMI.M.post, na.rm=TRUE), 
+           meanSC = mean(ATMI.E.post, na.rm=TRUE),
+           meanV = mean(ATMI.V.post, na.rm=TRUE))
+n$id <- "post"
+
+o <- melt(n[,c("Term","meanE","meanM","meanSC","meanV","id")], id.vars=c("Term","id"))
+
+ggplot(o, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)
+
+#ATMI pre-post bar graph
+lo <- rbind(o,l)
+lo$id <- factor(lo$id, levels=c("pre", "post"))
+ggplot(lo, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(id)))+
+  facet_grid(Term ~.)
+
+
+#ATMI pre Boxplot
+box.ATMI.pre <- melt(TrigATMIdf[,c("Term","ATMI.E.pre","ATMI.M.pre","ATMI.SC.pre","ATMI.V.pre")], id.vars=c("Term"))
+box.ATMI.pre$id <- "pre"
+ls(box.ATMI.pre)
+ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
+  geom_boxplot() + facet_grid(Term ~.)
+str(box.ATMI.pre)
+
+#ATMI post Boxplot
+box.ATMI.post <- melt(TrigATMIdf[,c("Term","ATMI.E.post","ATMI.M.post","ATMI.SC.post","ATMI.V.post")], id.vars=c("Term"))
+box.ATMI.post$id <- "post"
+str(box.ATMI.post)
+ls(box.ATMI.post)
+ggplot(box.ATMI.post, aes(x=variable, y=value, fill=variable))+
+  geom_boxplot() + facet_grid(Term ~.)
+
+#ATMI pre-post Boxplot
+box.ATMI.pp <- rbind(box.ATMI.pre, box.ATMI.post)
+box.ATMI.pp$id <- factor(box.ATMI.pp$id, levels=c("pre", "post"))
+
+box.ATMI.pp$variable <- (ifelse(box.ATMI.pp$variable=="ATMI.E.pre"|box.ATMI.pp$variable=="ATMI.E.post","ATMI.E",
+                                ifelse(box.ATMI.pp$variable=="ATMI.M.pre"|box.ATMI.pp$variable=="ATMI.M.post","ATMI.M",
+                                       ifelse(box.ATMI.pp$variable=="ATMI.SC.pre"|box.ATMI.pp$variable=="ATMI.SC.post","ATMI.SC",
+                                              ifelse(box.ATMI.pp$variable=="ATMI.V.pre"|box.ATMI.pp$variable=="ATMI.V.post","ATMI.V",NA)))))   
+table(box.ATMI.pp$variable,useNA="always")
+
+ggplot(box.ATMI.pp, aes(x=variable, y=value))+
+  geom_boxplot(aes(fill=id)) + facet_grid(Term ~.)
+str(box.ATMI.pp)
+
+
+#normalized gain
+#Averages of the students
+ng <- ddply(TrigATMIdf, "Term", summarise, meanE.ng = mean(ATMI.E.ng, na.rm=TRUE),
+            meanM.ng = mean(ATMI.M.ng, na.rm=TRUE), 
+            meanSC.ng = mean(ATMI.E.ng, na.rm=TRUE),
+            meanV.ng = mean(ATMI.V.ng, na.rm=TRUE))
+
+ngl <- melt(ng[,c("Term","meanE.ng","meanM.ng","meanSC.ng","meanV.ng")], id.vars=c("Term"))
+
+ggplot(ngl, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)
+
+
+##=====================
+## IDENTITY
+#Identity pre and post
+ls(TrigATMIdf)
+m <- ddply(TrigATMIdf, "Term", summarise, meanid.pre = mean(MathId.pre, na.rm=TRUE),
+           meanid.post = mean(MathId.post, na.rm=TRUE))
+
+l <- melt(m[,c("Term","meanid.pre","meanid.post")], id.vars=c("Term"))
+
+ggplot(l, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)
+
+#normalized gain
+ng <- ddply(TrigATMIdf, "Term", summarise, meanMathId.ng = mean(MathId.ng, na.rm=TRUE))
+
+ggplot(ng, aes(x=factor(Term), y=meanMathId.ng)) +
+  geom_bar(stat="identity",aes(fill=factor(Term)))
+
+
+##=====================
+## METACOGNITION
+# Metacognition pre and post
+
+#Metacognition pre and post
+ls(TrigATMIdf)
+m <- ddply(TrigATMIdf, "Term", summarise, meanmetk.pre = mean(Metacog.K.pre, na.rm=TRUE),
+           meanmetk.post = mean(Metacog.K.post, na.rm=TRUE),
+           meanmetr.pre = mean(Metacog.R.pre, na.rm=TRUE),
+           meanmetr.post = mean(Metacog.R.post, na.rm=TRUE))
+
+l <- melt(m[,c("Term","meanmetk.pre","meanmetk.post","meanmetr.pre","meanmetr.post")], id.vars=c("Term"))
+
+ggplot(l, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)
+
+#normalized gain
+ng <- ddply(TrigATMIdf, "Term", summarise, meanMetK.ng = mean(MetK.ng, na.rm=TRUE),
+            meanMetK.ng = mean(MetK.ng, na.rm=TRUE))
+
+ggplot(ng, aes(x=factor(Term), y=meanMathId.ng)) +
+  geom_bar(stat="identity",aes(fill=factor(Term)))
+
+#=======================================================================================
+
+####################################################################################
+
+####### Merging Class info with ATMIdf####### 
+ClassInfoJHTrig <- ClassInfoJHTrig[,c(1,8,15,16,19,22,23,26)]
+ClassInfoJHTrig <- unique(ClassInfoJHTrig)
+
+MPTrig <- merge(TrigATMIdf,ClassInfoJHTrig,by=c("Term","PID"),all.x=TRUE)
+
+
+#### Linear Model predicting final grade with the following predictors: gains in ATMI,#
+#metacongiiton, identity, gender, SAT.##########
+
+Lm1<- lm(MPTrig$Grd.Pt.Unt~MPTrig$Max.Score+MPTrig$Sex+MPTrig$GPA)
+summary(Lm1)
+##### GPA Significant Factor ##### 
+
+LmPre<- lm(MPTrig$Grd.Pt.Unt~MPTrig$ATMI.E.pre+MPTrig$ATMI.M.pre+MPTrig$ATMI.SC.pre+MPTrig$ATMI.V.pre)
+summary(LmPre)
+
+LmPost<- lm(MPTrig$Grd.Pt.Unt~MPTrig$ATMI.E.post+MPTrig$ATMI.M.post+MPTrig$ATMI.SC.post+MPTrig$ATMI.V.post)
+summary(LmPost)
+
+lmOpre<- lm(MPTrig$Grd.Pt.Unt~MPTrig$OverallATMIpre)
+summary(lmOpre)
+
+lmOpost<- lm(MPTrig$Grd.Pt.Unt~MPTrig$GPA+MPTrig$OverallATMIpost) 
+summary(lmOpost)
+##### Post Significant Factor ##### 
+
+lmOverall <- lm(MPTrig$Grd.Pt.Unt~MPTrig$OverallATMI.ng)
+summary(lmOverall)
+
+####Difference (Raw Gain) Post-Pre### 
+
+MPTrig$Rawgain<- MPTrig$OverallATMIpost-MPTrig$OverallATMIpre
+
+lmRG <- lm(MPTrig$Grd.Pt.Unt~MPTrig$Rawgain)
+summary(lmRG)
