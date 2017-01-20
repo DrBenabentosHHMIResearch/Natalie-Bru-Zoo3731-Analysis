@@ -14,6 +14,7 @@ library(base) #iceless
 library(scales)
 library(knitr)
 library(reshape2)
+library(gdata)
 
 #########################################
 ######### Creating Dataframes ###########
@@ -21,12 +22,12 @@ library(reshape2)
 
 ####### Opening The Datasheets ##########
 file.choose()
-setwd("/Users/NatalieBrunelle/Desktop/Work_2016/fallATMI/Rocio Needed Files ")
+setwd("/Users/NatalieBrunelle/Desktop/Work_2016/fallATMI/Rocio_Needed_Files ")
 #### Pre ATMI #### 
 PreFall15AM <- read.csv("ncsin_Fall15_MAT_AM_Pre_Batch.csv")
 PreFall15PM <- read.csv("ncsin_Fall15_MAT_PM_Pre_ncsin.csv")
 PreSpring16 <- read.csv("ncsin_Spring16_MAT_Pre.csv")
-PreSummer15 <- read.csv( "ncsin_Hower_Trig_Pre_Summer15.csv")
+PreSummer15 <- read.csv( "/Users/NatalieBrunelle/Desktop/Work_2016/fallATMI/TRIG ATMI /ncsin_Hower_Trig_Pre_Summer15.csv" )
 
 length(unique(PreSummer15$PID))
 length(unique(PoSummer15$PID))
@@ -39,7 +40,7 @@ ATMIdfsub <- merge(PreSpring16, PoSpring16, by="PID")
 PoFall15AM <- read.csv("ncsin_Fall15_MAT_Post_AM_Batch_108.csv")
 PoFall15PM <- read.csv("ncsin_Fall15_MAT_Post_PM_Batch_109.csv")
 PoSpring16 <- read.csv("ncsin_Spring16_MAT_Post.csv")
-PoSummer15<- read.csv("ncsin_Trig_Hower_Summer15_Post.csv")
+PoSummer15<- read.csv("/Users/NatalieBrunelle/Desktop/Work_2016/fallATMI/TRIG ATMI /ncsin_Trig_Hower_Summer15_Post.csv")
 
 ##### Hower CSV With Class Info #### 
 ClassInfoJH <- read.csv( "/Users/NatalieBrunelle/Desktop/Work_2016/fallATMI/FIU Course Grade Statistics MAT1033 16.06.20.csv")
@@ -563,16 +564,44 @@ ATMIdf[,c("OverallATMIpost","ATMI.V.post", "ATMI.M.post","ATMI.E.post","ATMI.SC.
 ##NORMALIZED GAINS
 ### First Create and Overall Atmi Pre, O A Post, adding EMSCV,
 #### 2. NG for that overall and follow the formula 
-ATMIdf$ATMI.E.ng <- ifelse(ATMIdf$ATMI.E.pre<25,((ATMIdf$ATMI.E.post - ATMIdf$ATMI.E.pre)/(25-ATMIdf$ATMI.E.pre))*100, NA) 
-ATMIdf$ATMI.M.ng <- ifelse(ATMIdf$ATMI.M.pre<20,((ATMIdf$ATMI.M.post - ATMIdf$ATMI.M.pre)/(20-ATMIdf$ATMI.M.pre))*100, NA) 
-ATMIdf$ATMI.SC.ng <- ifelse(ATMIdf$ATMI.SC.pre<25,((ATMIdf$ATMI.SC.post - ATMIdf$ATMI.SC.pre)/(25-ATMIdf$ATMI.SC.pre))*100, NA) 
-ATMIdf$ATMI.V.ng <- ifelse(ATMIdf$ATMI.V.pre<25,((ATMIdf$ATMI.V.post - ATMIdf$ATMI.V.pre)/(25-ATMIdf$ATMI.V.pre))*100, NA) 
+#ATMIdf$ATMI.E.ng <- ifelse(ATMIdf$ATMI.E.pre<25,((ATMIdf$ATMI.E.post - ATMIdf$ATMI.E.pre)/(25-ATMIdf$ATMI.E.pre))*100, NA) 
+#ATMIdf$ATMI.M.ng <- ifelse(ATMIdf$ATMI.M.pre<20,((ATMIdf$ATMI.M.post - ATMIdf$ATMI.M.pre)/(20-ATMIdf$ATMI.M.pre))*100, NA) 
+#ATMIdf$ATMI.SC.ng <- ifelse(ATMIdf$ATMI.SC.pre<25,((ATMIdf$ATMI.SC.post - ATMIdf$ATMI.SC.pre)/(25-ATMIdf$ATMI.SC.pre))*100, NA) 
+#ATMIdf$ATMI.V.ng <- ifelse(ATMIdf$ATMI.V.pre<25,((ATMIdf$ATMI.V.post - ATMIdf$ATMI.V.pre)/(25-ATMIdf$ATMI.V.pre))*100, NA) 
 
 ATMIdf$MathId.ng <- ifelse(ATMIdf$MathId.pre<60, ((ATMIdf$MathId.post - ATMIdf$MathId.pre)/(60-ATMIdf$MathId.pre))*100, NA) 
 
-ATMIdf$MetK.ng <- ifelse(ATMIdf$MathId.pre<40, ((ATMIdf$Metacog.K.post - ATMIdf$Metacog.K.pre)/(40-ATMIdf$MMetacog.K.pre))*100, NA) 
-ATMIdf$MetR.ng <- ifelse(ATMIdf$MathId.pre<55, ((ATMIdf$Metacog.R.post - ATMIdf$Metacog.R.pre)/(55-ATMIdf$Metacog.R.pre))*100, NA) 
+ATMIdf$MetK.ng <- ifelse(ATMIdf$Metacog.K.pre<40, ((ATMIdf$Metacog.K.post - ATMIdf$Metacog.K.pre)/(40-ATMIdf$Metacog.K.pre))*100, NA) 
+ATMIdf$MetR.ng <- ifelse(ATMIdf$Metacog.R.pre<55, ((ATMIdf$Metacog.R.post - ATMIdf$Metacog.R.pre)/(55-ATMIdf$Metacog.R.pre))*100, NA) 
 
+#above is the old normalized gains in case of some error 
+
+ATMIdf$ATMI.E.ng <-ifelse((ATMIdf$ATMI.E.post_r>ATMIdf$ATMI.E.pre_r),(((ATMIdf$ATMI.E.post_r - ATMIdf$ATMI.E.pre_r)/(100-ATMIdf$ATMI.E.pre_r))*100),
+                          (ifelse((ATMIdf$ATMI.E.post_r<ATMIdf$ATMI.E.pre_r),(((ATMIdf$ATMI.E.post_r - ATMIdf$ATMI.E.pre_r)/(ATMIdf$ATMI.E.pre_r))*100),
+                                  (ifelse(((ATMIdf$ATMI.E.pre_r==100)|(ATMIdf$ATMI.E.pre_r==0)),NA,0)))))
+ATMIdfng <- ATMIdf[,c("ATMI.E.pre_r","ATMI.E.post_r","ATMI.E.ng")]
+
+
+ATMIdf$ATMI.M.ng <-ifelse((ATMIdf$ATMI.M.post_r>ATMIdf$ATMI.M.pre_r),(((ATMIdf$ATMI.M.post_r - ATMIdf$ATMI.M.pre_r)/(100-ATMIdf$ATMI.M.pre_r))*100),
+                          (ifelse((ATMIdf$ATMI.M.post_r<ATMIdf$ATMI.M.pre_r),(((ATMIdf$ATMI.M.post_r - ATMIdf$ATMI.M.pre_r)/(ATMIdf$ATMI.M.pre_r))*100),
+                                  (ifelse(((ATMIdf$ATMI.M.pre_r==100)|(ATMIdf$ATMI.M.pre_r==0)),NA,0)))))
+
+ATMIdfng <- ATMIdf[,c("ATMI.M.pre_r","ATMI.M.post_r","ATMI.M.ng")]
+                          
+ATMIdf$ATMI.SC.ng <-ifelse((ATMIdf$ATMI.SC.post_r>ATMIdf$ATMI.SC.pre_r),(((ATMIdf$ATMI.SC.post_r - ATMIdf$ATMI.SC.pre_r)/(100-ATMIdf$ATMI.SC.pre_r))*100),
+                           (ifelse((ATMIdf$ATMI.SC.post_r<ATMIdf$ATMI.SC.pre_r),(((ATMIdf$ATMI.SC.post_r - ATMIdf$ATMI.SC.pre_r)/(ATMIdf$ATMI.SC.pre_r))*100),
+                                   (ifelse(((ATMIdf$ATMI.SC.pre_r==100)|(ATMIdf$ATMI.SC.pre_r==0)),NA,0)))))
+                           
+ATMIdfng <- ATMIdf[,c("ATMI.SC.pre_r","ATMI.SC.post_r","ATMI.SC.ng")]
+
+ATMIdf$ATMI.V.ng <-ifelse((ATMIdf$ATMI.V.post_r>ATMIdf$ATMI.V.pre_r),(((ATMIdf$ATMI.V.post_r - ATMIdf$ATMI.V.pre_r)/(100-ATMIdf$ATMI.V.pre_r))*100),
+                          (ifelse((ATMIdf$ATMI.V.post_r<ATMIdf$ATMI.V.pre_r),(((ATMIdf$ATMI.V.post_r - ATMIdf$ATMI.V.pre_r)/(ATMIdf$ATMI.V.pre_r))*100),
+                                  (ifelse(((ATMIdf$ATMI.V.pre_r==100)|(ATMIdf$ATMI.V.pre_r==0)),NA,0)))))
+
+ATMIdfng <- ATMIdf[,c("ATMI.V.pre_r","ATMI.V.post_r","ATMI.V.ng")]
+
+
+table(ATMIdf$MetR.ng)
 ######################################
 ##### Making an OveralL Normalized Gain #### 
 ATMIdf$OverallATMI.ng <- ifelse(ATMIdf$OverallATMIpre<95, ((ATMIdf$OverallATMIpost - ATMIdf$OverallATMIpre)/(95-ATMIdf$OverallATMIpre))*100, NA)
@@ -586,68 +615,100 @@ describeBy(ATMIdf$MathId.ng)
 #=======================================================================================
 ##GRAPHS##
 ## ATMI pre and post
-#ATMI pre bargraph
-m <- ddply(ATMIdf, "Term", summarise, meanE = mean(ATMI.E.pre, na.rm=TRUE),
-                 meanM = mean(ATMI.M.pre, na.rm=TRUE), 
-                meanSC = mean(ATMI.E.pre, na.rm=TRUE),
-               meanV = mean(ATMI.V.pre, na.rm=TRUE))
+#ATMI pre bargraph   #####Make it percentages use first line as template 
+m <- ddply(ATMIdf, "Term", summarise, meanE = ((mean(ATMI.E.pre, na.rm=TRUE))/25*100),
+           meanM = (mean(ATMI.M.pre, na.rm=TRUE)/20*100), 
+           meanSC = (mean(ATMI.E.pre, na.rm=TRUE)/25*100),
+           meanV = (mean(ATMI.V.pre, na.rm=TRUE))/25*100)
+
 m$id <- "pre"
 
 l <- melt(m[,c("Term","meanE","meanM","meanSC","meanV","id")], id.vars=c("Term","id"))
 
 ggplot(l, aes(x=factor(variable), y=value)) +
   geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
-             facet_grid(Term ~.)
+             facet_grid(Term ~.)+
+theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
 
 #ATMI post bargraph
-n <- ddply(ATMIdf, "Term", summarise, meanE = mean(ATMI.E.post, na.rm=TRUE),
-           meanM = mean(ATMI.M.post, na.rm=TRUE), 
-           meanSC = mean(ATMI.E.post, na.rm=TRUE),
-           meanV = mean(ATMI.V.post, na.rm=TRUE))
+n <- ddply(ATMIdf, "Term", summarise, meanE = (mean(ATMI.E.post, na.rm=TRUE)/25*100),
+           meanM = (mean(ATMI.M.post, na.rm=TRUE)/20*100), 
+           meanSC = (mean(ATMI.E.post, na.rm=TRUE)/25*100),
+           meanV = (mean(ATMI.V.post, na.rm=TRUE)/25*100))
 n$id <- "post"
 
 o <- melt(n[,c("Term","meanE","meanM","meanSC","meanV","id")], id.vars=c("Term","id"))
 
 ggplot(o, aes(x=factor(variable), y=value)) +
   geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
-  facet_grid(Term ~.)
+  facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
+
 
 #ATMI pre-post bar graph
 lo <- rbind(o,l)
 lo$id <- factor(lo$id, levels=c("pre", "post"))
 ggplot(lo, aes(x=factor(variable), y=value)) +
   geom_bar(position="dodge", stat="identity",aes(fill=factor(id)))+
-  facet_grid(Term ~.)
+  facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
 
 
 #ATMI pre Boxplot
-box.ATMI.pre <- melt(ATMIdf[,c("Term","ATMI.E.pre","ATMI.M.pre","ATMI.SC.pre","ATMI.V.pre")], id.vars=c("Term"))
+#### Creating Variables for the ATMI percentages ### 
+ATMIdf$ATMI.E.pre_r <- (ATMIdf$ATMI.E.pre/25*100)
+ATMIdf$ATMI.M.pre_r <- (ATMIdf$ATMI.M.pre/20*100)
+ATMIdf$ATMI.SC.pre_r <- (ATMIdf$ATMI.SC.pre/25*100)
+ATMIdf$ATMI.V.pre_r <- (ATMIdf$ATMI.V.pre/25*100)
+
+box.ATMI.pre <- melt(ATMIdf[,c("Term","ATMI.E.pre_r","ATMI.M.pre_r","ATMI.SC.pre_r","ATMI.V.pre_r")], id.vars=c("Term"))
 box.ATMI.pre$id <- "pre"
 ls(box.ATMI.pre)
 ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
-  geom_boxplot() + facet_grid(Term ~.)
+  geom_boxplot() + facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
 str(box.ATMI.pre)
 
 #ATMI post Boxplot
-box.ATMI.post <- melt(ATMIdf[,c("Term","ATMI.E.post","ATMI.M.post","ATMI.SC.post","ATMI.V.post")], id.vars=c("Term"))
+#crete new variables 
+ATMIdf$ATMI.E.post_r <- (ATMIdf$ATMI.E.post/25*100)
+ATMIdf$ATMI.M.post_r <- (ATMIdf$ATMI.M.post/20*100)
+ATMIdf$ATMI.SC.post_r <- (ATMIdf$ATMI.SC.post/25*100)
+ATMIdf$ATMI.V.post_r <- (ATMIdf$ATMI.V.post/25*100)
+
+box.ATMI.post <- melt(ATMIdf[,c("Term","ATMI.E.post_r","ATMI.M.post_r","ATMI.SC.post_r","ATMI.V.post_r")], id.vars=c("Term"))
 box.ATMI.post$id <- "post"
 str(box.ATMI.post)
 ls(box.ATMI.post)
 ggplot(box.ATMI.post, aes(x=variable, y=value, fill=variable))+
-  geom_boxplot() + facet_grid(Term ~.)
+  geom_boxplot() + facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
 
 #ATMI pre-post Boxplot
 box.ATMI.pp <- rbind(box.ATMI.pre, box.ATMI.post)
 box.ATMI.pp$id <- factor(box.ATMI.pp$id, levels=c("pre", "post"))
 
-box.ATMI.pp$variable <- (ifelse(box.ATMI.pp$variable=="ATMI.E.pre"|box.ATMI.pp$variable=="ATMI.E.post","ATMI.E",
-                                ifelse(box.ATMI.pp$variable=="ATMI.M.pre"|box.ATMI.pp$variable=="ATMI.M.post","ATMI.M",
-                                 ifelse(box.ATMI.pp$variable=="ATMI.SC.pre"|box.ATMI.pp$variable=="ATMI.SC.post","ATMI.SC",
-                                    ifelse(box.ATMI.pp$variable=="ATMI.V.pre"|box.ATMI.pp$variable=="ATMI.V.post","ATMI.V",NA)))))   
+box.ATMI.pp$variable <- (ifelse(box.ATMI.pp$variable=="ATMI.E.pre_r"|box.ATMI.pp$variable=="ATMI.E.post_r","ATMI.E",
+                                ifelse(box.ATMI.pp$variable=="ATMI.M.pre_r"|box.ATMI.pp$variable=="ATMI.M.post_r","ATMI.M",
+                                 ifelse(box.ATMI.pp$variable=="ATMI.SC.pre_r"|box.ATMI.pp$variable=="ATMI.SC.post_r","ATMI.SC",
+                                    ifelse(box.ATMI.pp$variable=="ATMI.V.pre_r"|box.ATMI.pp$variable=="ATMI.V.post_r","ATMI.V",NA)))))   
 table(box.ATMI.pp$variable,useNA="always")
 
 ggplot(box.ATMI.pp, aes(x=variable, y=value))+
-  geom_boxplot(aes(fill=id)) + facet_grid(Term ~.)
+  geom_boxplot(aes(fill=id)) + facet_grid(Term ~.)+  
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
 str(box.ATMI.pp)
 
 
@@ -662,8 +723,22 @@ ngl <- melt(ng[,c("Term","meanE.ng","meanM.ng","meanSC.ng","meanV.ng")], id.vars
 
 ggplot(ngl, aes(x=factor(variable), y=value)) +
   geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
-  facet_grid(Term ~.)
+  facet_grid(Term ~.)+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
 
+####Boxplot for Normalized Gains ####### 
+box.ATMI.ng <- melt(ATMIdf[,c("Term","ATMI.E.ng","ATMI.M.ng","ATMI.SC.ng","ATMI.V.ng")], id.vars=c("Term"))
+
+ggplot(box.ATMI.ng, aes(x=variable, y=value, fill=variable))+
+  geom_boxplot() + facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
+
+### ^^^ Check the boxplot above to see if it actually worked #### 
+###The following warning message was Warning message:
+##Removed 1 rows containing non-finite values (stat_boxplot).###
 
 ##=====================
 ## IDENTITY
@@ -676,13 +751,19 @@ l <- melt(m[,c("Term","meanid.pre","meanid.post")], id.vars=c("Term"))
 
 ggplot(l, aes(x=factor(variable), y=value)) +
   geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
-  facet_grid(Term ~.)
+  facet_grid(Term ~.)+ 
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
 
-#normalized gain
-ng <- ddply(ATMIdf, "Term", summarise, meanMathId.ng = mean(MathId.ng, na.rm=TRUE))
+#normalized gain for Identity
+ng1 <- ddply(ATMIdf, "Term", summarise, meanMathId.ng = mean(MathId.ng, na.rm=TRUE))
 
-ggplot(ng, aes(x=factor(Term), y=meanMathId.ng)) +
-  geom_bar(stat="identity",aes(fill=factor(Term)))
+ggplot(ng1, aes(x=factor(Term), y=meanMathId.ng)) +
+  geom_bar(stat="identity",aes(fill=factor(Term)))+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
 
 ##=====================
 ## METACOGNITION
@@ -699,14 +780,23 @@ l <- melt(m[,c("Term","meanmetk.pre","meanmetk.post","meanmetr.pre","meanmetr.po
 
 ggplot(l, aes(x=factor(variable), y=value)) +
   geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
-  facet_grid(Term ~.)
+  facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
 
-#normalized gain
-ng <- ddply(ATMIdf, "Term", summarise, meanMetK.ng = mean(MetK.ng, na.rm=TRUE),
+#normalized gain for Metacognition
+table(ATMIdf$MetK.ng)
+ng2 <- ddply(ATMIdf, "Term", summarise, meanMetK.ng = mean(MetK.ng, na.rm=TRUE),
             meanMetK.ng = mean(MetK.ng, na.rm=TRUE))
 
-ggplot(ng, aes(x=factor(Term), y=meanMathId.ng)) +
-  geom_bar(stat="identity",aes(fill=factor(Term)))
+ggplot(ng2, aes(x=factor(Term), y=meanMetK.ng)) +
+  geom_bar(stat="identity",aes(fill=factor(Term)))+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
+
+####Create overall for Meta
 
 ####################################################################################
 
@@ -749,3 +839,5 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 
 lmRG <- lm(MP1$Grd.Pt.Unt~MP1$Rawgain)
 summary(lmRG)
+
+write.csv(ATMIdf, "ATMIdf.csv")
