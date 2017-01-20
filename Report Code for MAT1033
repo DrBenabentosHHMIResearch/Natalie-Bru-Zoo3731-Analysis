@@ -1,0 +1,523 @@
+
+\documentclass[12pt]{article}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{relsize,setspace}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{xcolor}% http://ctan.org/pkg/xcolor
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Jeremiah Hower MAT1033 ATMI Results }
+\lhead{Summary Report Draft}
+\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt} %thickness of the header line
+\renewcommand{\headrule}{\hbox to\headwidth{%
+    \color{gray}\leaders\hrule height \headrulewidth\hfill}}
+\headheight 30pt \headsep 20pt
+\footskip 10.5pt 
+
+
+\begin{document}
+
+<<InitialProcedures, echo=FALSE, include=FALSE >>=
+
+library(gdata)
+library("rio")
+library(plyr)
+library(car)
+library(ggplot2)
+library(psych)
+library(reshape2)
+
+
+setwd("/Users/NatalieBrunelle/Desktop/Work_2016/fallATMI/Rocio_Needed_Files /") #set working director to that file (so that R can open the docs without the path)
+ATMIdf <- read.csv("ATMIdf.csv")
+ClassInfoJH <- read.csv( "/Users/NatalieBrunelle/Desktop/Work_2016/fallATMI/FIU Course Grade Statistics MAT1033 16.06.20.csv")
+
+#ATMI Pre Bargraph 
+m <- ddply(ATMIdf, "Term", summarise, meanE = ((mean(ATMI.E.pre, na.rm=TRUE))/25*100),
+           meanM = (mean(ATMI.M.pre, na.rm=TRUE)/20*100), 
+           meanSC = (mean(ATMI.E.pre, na.rm=TRUE)/25*100),
+           meanV = (mean(ATMI.V.pre, na.rm=TRUE))/25*100)
+m$id <- "pre"
+
+l <- melt(m[,c("Term","meanE","meanM","meanSC","meanV","id")], id.vars=c("Term","id"))
+
+#ATMI Post Bargraph
+n <- ddply(ATMIdf, "Term", summarise, meanE = (mean(ATMI.E.post, na.rm=TRUE)/25*100),
+           meanM = (mean(ATMI.M.post, na.rm=TRUE)/20*100), 
+           meanSC = (mean(ATMI.E.post, na.rm=TRUE)/25*100),
+           meanV = (mean(ATMI.V.post, na.rm=TRUE)/25*100))
+n$id <- "post"
+
+o <- melt(n[,c("Term","meanE","meanM","meanSC","meanV","id")], id.vars=c("Term","id"))
+
+#ATMI Pre-Post Bar graph
+lo <- rbind(o,l)
+lo$id <- factor(lo$id, levels=c("pre", "post"))
+
+#ATMI pre Boxplot
+ATMIdf$ATMI.E.pre_r <- (ATMIdf$ATMI.E.pre/25*100)
+ATMIdf$ATMI.M.pre_r <- (ATMIdf$ATMI.M.pre/20*100)
+ATMIdf$ATMI.SC.pre_r <- (ATMIdf$ATMI.SC.pre/25*100)
+ATMIdf$ATMI.V.pre_r <- (ATMIdf$ATMI.V.pre/25*100)
+
+box.ATMI.pre <- melt(ATMIdf[,c("Term","ATMI.E.pre_r","ATMI.M.pre_r","ATMI.SC.pre_r","ATMI.V.pre_r")], id.vars=c("Term"))
+box.ATMI.pre$id <- "pre"
+ls(box.ATMI.pre)
+
+#ATMI post Boxplot
+ATMIdf$ATMI.E.post_r <- (ATMIdf$ATMI.E.post/25*100)
+ATMIdf$ATMI.M.post_r <- (ATMIdf$ATMI.M.post/20*100)
+ATMIdf$ATMI.SC.post_r <- (ATMIdf$ATMI.SC.post/25*100)
+ATMIdf$ATMI.V.post_r <- (ATMIdf$ATMI.V.post/25*100)
+
+box.ATMI.post <- melt(ATMIdf[,c("Term","ATMI.E.post_r","ATMI.M.post_r","ATMI.SC.post_r","ATMI.V.post_r")], id.vars=c("Term"))
+box.ATMI.post$id <- "post"
+str(box.ATMI.post)
+ls(box.ATMI.post)
+
+#ATMI pre-post Boxplot
+box.ATMI.pp <- rbind(box.ATMI.pre, box.ATMI.post)
+box.ATMI.pp$id <- factor(box.ATMI.pp$id, levels=c("pre", "post"))
+
+box.ATMI.pp$variable <- (ifelse(box.ATMI.pp$variable=="ATMI.E.pre_r"|box.ATMI.pp$variable=="ATMI.E.post_r","ATMI.E",
+                                ifelse(box.ATMI.pp$variable=="ATMI.M.pre_r"|box.ATMI.pp$variable=="ATMI.M.post_r","ATMI.M",
+                                 ifelse(box.ATMI.pp$variable=="ATMI.SC.pre_r"|box.ATMI.pp$variable=="ATMI.SC.post_r","ATMI.SC",
+                                    ifelse(box.ATMI.pp$variable=="ATMI.V.pre_r"|box.ATMI.pp$variable=="ATMI.V.post_r","ATMI.V",NA)))))   
+table(box.ATMI.pp$variable,useNA="always")
+
+#normalized gain
+#Averages of the students
+ng <- ddply(ATMIdf, "Term", summarise, meanE.ng = mean(ATMI.E.ng, na.rm=TRUE),
+           meanM.ng = mean(ATMI.M.ng, na.rm=TRUE), 
+           meanSC.ng = mean(ATMI.E.ng, na.rm=TRUE),
+           meanV.ng = mean(ATMI.V.ng, na.rm=TRUE))
+
+ngl <- melt(ng[,c("Term","meanE.ng","meanM.ng","meanSC.ng","meanV.ng")], id.vars=c("Term"))
+
+####Boxplot for Normalized Gains ####### 
+box.ATMI.ng <- melt(ATMIdf[,c("Term","ATMI.E.ng","ATMI.M.ng","ATMI.SC.ng","ATMI.V.ng")], id.vars=c("Term"))
+
+
+## IDENTITY
+#Identity pre and post
+ls(ATMIdf)
+m1 <- ddply(ATMIdf, "Term", summarise, meanid.pre = mean(MathId.pre, na.rm=TRUE),
+           meanid.post = mean(MathId.post, na.rm=TRUE))
+
+l1 <- melt(m1[,c("Term","meanid.pre","meanid.post")], id.vars=c("Term"))
+
+#normalized gain for Identity
+ng1 <- ddply(ATMIdf, "Term", summarise, meanMathId.ng = mean(MathId.ng, na.rm=TRUE))
+
+#Metacognition pre and post
+ls(ATMIdf)
+m2 <- ddply(ATMIdf, "Term", summarise, meanmetk.pre = mean(Metacog.K.pre, na.rm=TRUE),
+           meanmetk.post = mean(Metacog.K.post, na.rm=TRUE),
+           meanmetr.pre = mean(Metacog.R.pre, na.rm=TRUE),
+           meanmetr.post = mean(Metacog.R.post, na.rm=TRUE))
+
+l2 <- melt(m2[,c("Term","meanmetk.pre","meanmetk.post","meanmetr.pre","meanmetr.post")], id.vars=c("Term"))
+
+#normalized gain for Metacognition 
+ng2 <- ddply(ATMIdf, "Term", summarise, meanMetK.ng = mean(MetK.ng, na.rm=TRUE),
+            meanMetK.ng = mean(MetK.ng, na.rm=TRUE))
+
+#### Linear Model predicting final grade with the following predictors: gains in ATMI,#
+#metacongiiton, identity, gender, SAT.##########
+
+names(ClassInfoJH)[names(ClassInfoJH) =='ID'] <- 'PID'
+MP1 <- merge(ATMIdf,ClassInfoJH[,c(1,4,8,10:11,14,16:17,20,23:24,27:28)],by=c("Term","PID"),all.x=TRUE)
+str(MP1)
+str(ATMIdf)
+str(ClassInfoJH)
+str(ClassInfoJH[,c(1,4,8,10:11,14,16:17,20,23:24,27:28)])
+str(MP1)
+ls(ClassInfoJH[,c(5,7,13)])
+
+Lm1<- lm(MP1$Grd.Pt.Unt~MP1$Max.Score+MP1$Sex+MP1$GPA)
+
+###See if we keep this one 
+MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
+
+@
+\begin{center}{\Huge Attitudes Toward Math Inventory }\par
+\Huge MAT 1033 Intermediate Algebra \par
+\Huge Jeremiah Hower \par
+\Huge  Fall '15 and Spring '16 \par
+\vspace{5mm}
+\end{center}
+
+\newpage
+\begin{flushleft}{\Huge Table of Contents }\par
+ \hfill\break
+\large Introduction \par
+\large ATMI Pre-Semester Bargraph \par
+\large ATMI Post-Semester Bargraph \par
+\large ATMI Pre-Post Comparison Bargraph \par
+\large ATMI Pre-Semester Boxplot \par
+\large ATMI Post-Semester Boxplot \par
+\large ATMI Pre-Post Comparison Boxplot \par
+\large ATMI  Normalized Gains \par
+\large ATMI Normalized Gains Boxplot \par 
+\large Math Identity \par
+\large Normalized Gains of Math Identity \par
+\large Metacognative Awareness  \par
+\large Normalized Gains for Metacognative Awareness   \par
+\large Statistically Significant Linear Models \par
+\large Statistically Insignificant Linear Models \par
+\vspace{5mm}
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\huge Introduction }\par
+ \hfill\break
+\large In the Fall of 2015 and Spring of 2016 students were asked to complete a survey before and after the semester. We measured three scales including the students Attitude Towards Math Inventory (ATMI), Math Identity and Metacognative Awareness. Within the ATMI portion of the assesment, four different constructs were measured which were the students Enjoyment for math, Motivation for math, their Self-Confidence in math and lastly their Value in Math. Math Identity on the other hand looked at the students knowledge and regulation.  %%%% Very rough draft...very rough
+\vspace{5mm}
+\end{flushleft} 
+
+\newpage
+\begin{flushleft}{\Large MAT1033 ATMI Start of Semester Bargraph }\par
+\large Mean scores for ATMI subconstructs \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+\normalsize In observing the students Attitudes Toward Math Inventory, these were the results obtainted measuring the students enjoyment, motivation, self-confidence and value before the start of their semester in Intermediate Algebra.  %%%% Very rough
+
+
+<<plot1.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+#ATMI Pre Bargraph 
+ggplot(l, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+             facet_grid(Term ~.)+
+theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean % Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+
+  scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
+
+
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\Large MAT1033 ATMI End of Semester Bargraph }\par
+\large Mean scores for ATMI subconstructs \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+\normalsize In observing the students Attitudes Toward Math Inventory, these were the results obtainted measuring the students enjoyment, motivation, self-confidence and value at the end of their semester in Intermediate Algebra. %%%% very rough
+ 
+<<plot2.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+#ATMI Post Bargraph
+
+ggplot(o, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Mean % Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+
+    scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
+
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\Large MAT1033 ATMI Beginning and End of Semester Comparison Bargraph }\par
+\large Mean scores for ATMI subconstructs \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+\normalsize This compares the students outlook towards math using the four different constructs measured in ATMI from the beggining of the semester to the end. \textbf{In both semesters, the students enjoyment and self confidence increased while their value decreased.} %%%%NOT ACTUAL TEXT 
+
+<<plot3.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+#ATMI Pre-Post Bar graph
+ggplot(lo, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(id)))+
+  facet_grid(Term ~.)+
+  theme(legend.position="bottom")+ 
+  ylab("ATMI Mean % Score") + xlab("")+
+    scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))+
+  scale_fill_brewer(direction=-1, palette="Paired",name="",
+                         breaks=c("pre", "post"),
+                         labels=c("Beginning of \n Semester", "End of \n Semester "))
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\Large MAT1033 ATMI Beggining of Semester Boxplot  }\par
+\large Distribution of mean scores for ATMI subsontructs \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+
+<<plot4.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+#ATMI pre Boxplot
+ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
+  geom_boxplot() + facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Percent Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+
+    scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\Large MAT1033 ATMI End of Semester Boxplot  }\par
+\large Distribution of mean scores for ATMI subsontructs \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+
+<<plot5.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+#ATMI post Boxplot
+ggplot(box.ATMI.post, aes(x=variable, y=value, fill=variable))+
+  geom_boxplot() + facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Percent Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+
+    scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\Large MAT1033 ATMI Beginning and End of Semester Comparison Boxplot  }\par
+\large Distribution of mean scores for ATMI subsontructs \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+
+<<plot6.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+#ATMI pre-post Boxplot
+ggplot(box.ATMI.pp, aes(x=variable, y=value))+
+  geom_boxplot(aes(fill=id)) + facet_grid(Term ~.)+  
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Percent Score") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+ 
+  scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\Large MAT1033 ATMI Normalized Gains Boxplot }\par
+\large Mean normalized gains for ATMI subconstructs \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+<<plot7.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+#normalized gain
+
+ggplot(ngl, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Normalized Gains") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+
+  scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
+
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\Large MAT1033 ATMI Normalized Gains  }\par
+\large Mean normalized gains for ATMI subconstructs \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+<<plot8.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+#normalized gain boxplot
+ggplot(box.ATMI.ng, aes(x=variable, y=value, fill=variable))+
+  geom_boxplot() + facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Normalized Gains") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+
+    scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
+
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\Large MAT1033 Math Identity Construct}\par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+\normalsize On average end of semester math identity is higher than beggining of semester math identity. 
+<<plot9.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+## Math IDENTITY
+#Identity pre and post
+
+ggplot(l1, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)+ 
+  theme(legend.position="none")+ #this removes the legend
+  ylab("Math Identity") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+
+  scale_x_discrete(labels=c("Beginning of Semester","End of Semester"))
+  
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+
+\newpage
+\begin{flushleft}{\Large MAT1033 Normalized Gains for Math Identity}\par
+\large Mean normalized gaiuns for math identity \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+
+<<plot10.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+#normalized gain for Identity
+ggplot(ng1, aes(x=factor(Term), y=meanMathId.ng)) +
+  geom_bar(stat="identity",aes(fill=factor(Term)))+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("Math Identity") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+
+\newpage
+\begin{flushleft}{\Large MAT1033 Metacognitive Awareness}\par
+\large Beginning and End of semester means of metacognative awareness subconstructs \par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+<<plot11.1, echo=FALSE, fig.align='center', warning=F, fig.width=7, fig.height=5, fig.keep='high'>>=
+
+#Metacognition pre and post
+ggplot(l2, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("Metacognative Awareness") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+
+  scale_x_discrete(labels=c("MA Knowledge \n Beginning of Semester ","MA Knowledge \n End of Semester","MA Regulation \n Beginning of Semester ","MA Regulation \n End of Semester"))
+  
+
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+
+\newpage
+\begin{flushleft}{\Large MAT1033  Normalized Gain for Metacognitive Awareness}\par
+\large Mean normalized gains for M A \par %%% FIX THIS 
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+
+<<plot12.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+#normalized gain for Metacognition
+ggplot(ng2, aes(x=factor(Term), y=meanMetK.ng)) +
+  geom_bar(stat="identity",aes(fill=factor(Term)))+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("Metacognitive Awareness") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
+@
+\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\end{flushleft}
+
+
+
+%%% Linear Model predicting final grade with the following predictors: gains in ATMI,# metacongiiton, identity, gender, SAT %%% 
+
+\newpage
+
+\begin{flushleft}{\Large MAT1033  Linear Model of Final Grades }\par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+\normalsize The following linear model uses the predictors of gains in ATMI, metacognative awareness, identity, gender and SAT score to determine a students final grade.
+ \hfill\break
+ \normalsize Of these predictors the students GPA* was the only predictor that was statistically significant in predicting the students final grade. 
+ %%%% rough draft
+<<plot13.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+summary(Lm1)
+
+@
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\Large MAT1033  Linear Model of Post }\par
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+\normalsize....
+ \hfill\break
+ \normalsize ...... %%% check what this is describing
+<<plot14.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+lmOpost<- lm(MP1$Grd.Pt.Unt~MP1$GPA+MP1$OverallATMIpost) 
+summary(lmOpost)
+
+@
+\end{flushleft}
+
+%% The Remaining LMFITS are the ones that did not really have significant values, consult with rocio to see if we keep or delete%%
+
+\newpage
+\begin{flushleft}
+<<plot15.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+LmPre<- lm(MP1$Grd.Pt.Unt~MP1$ATMI.E.pre+MP1$ATMI.M.pre+MP1$ATMI.SC.pre+MP1$ATMI.V.pre)
+summary(LmPre)
+
+@
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+<<plot16.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+LmPost<- lm(MP1$Grd.Pt.Unt~MP1$ATMI.E.post+MP1$ATMI.M.post+MP1$ATMI.SC.post+MP1$ATMI.V.post)
+summary(LmPost)
+@
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+<<plot17.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+lmOpre<- lm(MP1$Grd.Pt.Unt~MP1$OverallATMIpre)
+summary(lmOpre)
+
+@
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+<<plot18.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+lmOverall <- lm(MP1$Grd.Pt.Unt~MP1$OverallATMI.ng)
+summary(lmOverall)
+
+@
+\end{flushleft}
+
+\newpage
+\begin{flushleft}
+<<plot19.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+lmRG <- lm(MP1$Grd.Pt.Unt~MP1$Rawgain)
+summary(lmRG)
+
+
+@
+\end{flushleft}
+
+\newpage
+\begin{flushleft}{\huge Appendix }\par
+\large 
+\vspace{5mm}
+\end{flushleft} 
+
+\newpage
+\begin{flushleft}{\huge Reference Page }\par
+\large 
+\vspace{5mm}
+\end{flushleft} 
+
+\end{document}
