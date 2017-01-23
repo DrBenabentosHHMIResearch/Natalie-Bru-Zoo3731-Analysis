@@ -143,12 +143,15 @@ Lm1<- lm(MP1$Grd.Pt.Unt~MP1$Max.Score+MP1$Sex+MP1$GPA)
 MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 
 @
-\begin{center}{\Huge Attitudes Toward Math Inventory }\par
+\begin{titlepage}\centering
+\topskip0pt
+\vspace*{\fill}
+\Huge Attitudes Toward Math Inventory  \par
 \Huge MAT 1033 Intermediate Algebra \par
 \Huge Jeremiah Hower \par
 \Huge  Fall '15 and Spring '16 \par
-\vspace{5mm}
-\end{center}
+\vspace*{\fill}
+\end{titlepage}
 
 \newpage
 \begin{flushleft}{\Huge Table of Contents }\par
@@ -174,7 +177,29 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 \newpage
 \begin{flushleft}{\huge Introduction }\par
  \hfill\break
-\large In the Fall of 2015 and Spring of 2016 students were asked to complete a survey before and after the semester. We measured three scales including the students Attitude Towards Math Inventory (ATMI), Math Identity and Metacognative Awareness. Within the ATMI portion of the assesment, four different constructs were measured which were the students Enjoyment for math, Motivation for math, their Self-Confidence in math and lastly their Value in Math. Math Identity on the other hand looked at the students knowledge and regulation.  %%%% Very rough draft...very rough
+\large In the Fall of 2015 and Spring of 2016 students were asked to complete a survey at the beginning and at the end of the semester.
+ \hfill\break
+ \par
+\vspace{5mm}
+\large We measured three scales including the students Attitude Towards Math Inventory (ATMI), Math Identity and Metacognative Awareness. Within the ATMI portion of the assesment, four different constructs were measured which were the students Enjoyment for math, Motivation for math, their Self-Confidence in math and lastly their Value in Math. Math Identity on the other hand looked at the students knowledge and regulation.(See survey attached to the end of the report)
+\begin{itemize}
+   \item  Survey 
+   \begin{itemize}
+     \item  Attitudes Towards Math Inventory 
+     \begin{itemize}
+       \item  Enjoyment:
+       \item  Motivation:
+       \item Self confidence: 
+       \item Value: 
+       \end{itemize}
+             \end{itemize}
+    \begin{itemize}
+     \item Math Idendity
+     \end{itemize}
+    \begin{itemize}
+      \item Metacognitive Awareness
+      \end{itemize}
+ \end{itemize}
 \vspace{5mm}
 \end{flushleft} 
 
