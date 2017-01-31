@@ -8,7 +8,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{Jeremiah Hower MAT1033 ATMI Results }
+\rhead{Jeremiah Hower MAT1033 }
 \lhead{Summary Report Draft}
 \rfoot{Page \thepage}
 \renewcommand{\headrulewidth}{0.4pt} %thickness of the header line
@@ -147,7 +147,7 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 \begin{titlepage}\centering
 \topskip0pt
 \vspace*{\fill}
-\Huge Attitudes Toward Math Inventory  \par
+\Huge Student Affective Measures*  \par
 \Huge MAT 1033 Intermediate Algebra \par
 \Huge Jeremiah Hower \par
 \Huge  Fall '15 and Spring '16 \par
@@ -179,11 +179,14 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 \newpage
 \begin{flushleft}{\huge Introduction }\par
  \hfill\break
-\large In the Fall of 2015 and Spring of 2016 students were asked to complete a survey at the beginning and at the end of the semester.
+\large In the Fall of 2015 and Spring of 2016 students were asked to complete a survey at the beginning and at the end of the semester in MAT1033 (Intermediate Algebra) taught by professor Jeremiah Hower. 
  \hfill\break
  \par
 \vspace{5mm}
-\large We measured three scales including the students Attitude Towards Math Inventory (ATMI), Math Identity and Metacognative Awareness. Within the ATMI portion of the assesment, four different constructs were measured which were the students Enjoyment for math, Motivation for math, their Self-Confidence in math and lastly their Value in Math. Math Identity on the other hand looked at the students knowledge and regulation.(See survey attached to the end of the report)
+\large We measured three scales including the students Attitude Towards Math Inventory (ATMI), Math Identity and Metacognative Awareness. Within the ATMI portion of the assesment, four different constructs were measured: (1) Enjoyment for math, (2) Motivation for math, (3) Self-Confidence in math and (4) Value in Math.Metacognative Awareness on the other hand included two subconstructs: (1) Knowledge and (2) Regulation.
+\hfill\break
+ \par
+(See survey attached to the end of the report)
 \begin{itemize}
   \item Survey
     \begin{itemize} 
@@ -200,6 +203,10 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
     \end{itemize}
     \begin{itemize}
       \item Metacognition Awareness
+         \begin{itemize} 
+          \item Knowledge
+          \item Regulation
+          \end{itemize}
     \end{itemize}
 \end{itemize} 
 \begin{itemize}
@@ -214,12 +221,13 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 
 \newpage
 \begin{flushleft}{\Large MAT1033 ATMI Start of Semester Bargraph }\par
+\vspace{3mm}
 \large Mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-\normalsize In observing the students Attitudes Toward Math Inventory, these were the results obtainted measuring the students enjoyment, motivation, self-confidence and value before the start of their semester in Intermediate Algebra.  %%%% Very rough
-
-
+\normalsize In observing the students Attitudes Toward Math Inventory, these were the results obtainted measuring the students enjoyment, motivation, self-confidence and value at the start of the semester in Intermediate Algebra.  %%%% Very rough
+\hfill\break
+ \par
 <<plot1.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 #ATMI Pre Bargraph 
 ggplot(l, aes(x=factor(variable), y=value)) +
@@ -233,7 +241,7 @@ theme(legend.position="none")+ #this removes the legend
 
 @
 \begin{itemize}
-   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively. 
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean scores of ATMI subscales:
   \begin{itemize}
     \item Enjoyment (5 items, 0-25 scale)
@@ -246,11 +254,13 @@ theme(legend.position="none")+ #this removes the legend
 
 \newpage
 \begin{flushleft}{\Large MAT1033 ATMI End of Semester Bargraph }\par
+\vspace{3mm}
 \large Mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
 \normalsize In observing the students Attitudes Toward Math Inventory, these were the results obtainted measuring the students enjoyment, motivation, self-confidence and value at the end of their semester in Intermediate Algebra. %%%% very rough
- 
+\hfill\break
+ \par
 <<plot2.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 #ATMI Post Bargraph
 
@@ -264,7 +274,7 @@ ggplot(o, aes(x=factor(variable), y=value)) +
 
 @
 \begin{itemize}
-   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively. 
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean scores of ATMI subscales:
   \begin{itemize}
     \item Enjoyment (5 items, 0-25 scale)
@@ -277,11 +287,13 @@ ggplot(o, aes(x=factor(variable), y=value)) +
 
 \newpage
 \begin{flushleft}{\Large MAT1033 ATMI Beginning and End of Semester Comparison Bargraph }\par
+\vspace{3mm}
 \large Mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-\normalsize This compares the students outlook towards math using the four different constructs measured in ATMI from the beggining of the semester to the end. \textbf{In both semesters, the students enjoyment and self confidence increased while their value decreased.} %%%%NOT ACTUAL TEXT 
-
+\normalsize This graph compares the students outlook towards math using the four different subconstructs measured in ATMI from the beginning of the semester to the end. \textbf{In both semesters, the students enjoyment and self confidence increased while their value decreased. Motivation has not clear trend.}
+\hfill\break
+\par
 <<plot3.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 #ATMI Pre-Post Bar graph
@@ -296,7 +308,7 @@ ggplot(lo, aes(x=factor(variable), y=value)) +
                          labels=c("Beginning of \n Semester", "End of \n Semester "))
 @
 \begin{itemize}
-   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively. 
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean scores of ATMI subscales:
   \begin{itemize}
     \item Enjoyment (5 items, 0-25 scale)
@@ -308,11 +320,11 @@ ggplot(lo, aes(x=factor(variable), y=value)) +
 \end{flushleft}
 
 \newpage
-\begin{flushleft}{\Large MAT1033 ATMI Beggining of Semester Boxplot  }\par
-\large Distribution of mean scores for ATMI subsontructs \par
+\begin{flushleft}{\Large MAT1033 ATMI Beginning of Semester Boxplot  }\par
+\vspace{3mm}
+\large Distribution of mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-
 <<plot4.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 #ATMI pre Boxplot
 ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
@@ -323,9 +335,10 @@ ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
     scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 @
 \begin{itemize}
-   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively. 
-  \item Boxplot Language ; distribution of ATMI pre-cores for students. 4 subscales are represented
-  \begin{itemize} %%%Check this out 
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
+  \item Boxplot Language ; 
+  \item Distribution of ATMI pre-cores for students. 4 subscales are represented
+  \begin{itemize} 
     \item Enjoyment (5 items, 0-25 scale)
     \item Motivation (4 items, 0-20 scale)
     \item Self confidence (5 items, 0-25 scale)
@@ -336,7 +349,8 @@ ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
 
 \newpage
 \begin{flushleft}{\Large MAT1033 ATMI End of Semester Boxplot  }\par
-\large Distribution of mean scores for ATMI subsontructs \par
+\vspace{3mm}
+\large Distribution of mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
 
@@ -350,9 +364,10 @@ ggplot(box.ATMI.post, aes(x=variable, y=value, fill=variable))+
     scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 @
 \begin{itemize}
-   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively. 
-  \item Boxplot Language ; distribution of ATMI pre-cores for students. 4 subscales are represented
-  \begin{itemize} %%%Check this out 
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
+  \item Boxplot Language ; 
+  \item Distribution of ATMI pre-cores for students. 4 subscales are represented
+  \begin{itemize} 
     \item Enjoyment (5 items, 0-25 scale)
     \item Motivation (4 items, 0-20 scale)
     \item Self confidence (5 items, 0-25 scale)
@@ -364,7 +379,8 @@ ggplot(box.ATMI.post, aes(x=variable, y=value, fill=variable))+
 
 \newpage
 \begin{flushleft}{\Large MAT1033 ATMI Beginning and End of Semester Comparison Boxplot  }\par
-\large Distribution of mean scores for ATMI subsontructs \par
+\vspace{3mm}
+\large Distribution of mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
 
@@ -378,9 +394,10 @@ ggplot(box.ATMI.pp, aes(x=variable, y=value))+
   scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 @
 \begin{itemize}
-   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively. 
-  \item Boxplot Language ; distribution of ATMI pre-cores for students. 4 subscales are represented
-  \begin{itemize} %%%Check this out 
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
+  \item Boxplot Language ; 
+  \item Distribution of ATMI pre-cores for students. 4 subscales are represented
+  \begin{itemize} 
     \item Enjoyment (5 items, 0-25 scale)
     \item Motivation (4 items, 0-20 scale)
     \item Self confidence (5 items, 0-25 scale)
@@ -389,9 +406,9 @@ ggplot(box.ATMI.pp, aes(x=variable, y=value))+
 \end{itemize}
 \end{flushleft}
 
-
 \newpage
 \begin{flushleft}{\Large MAT1033 ATMI Normalized Gains Boxplot }\par
+\vspace{3mm}
 \large Mean normalized gains for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -407,12 +424,23 @@ ggplot(ngl, aes(x=factor(variable), y=value)) +
   scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 
 @
-\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\begin{itemize}
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
+  \item Normalized Gains- normalized change score calculated by following Marx and Cummings (2007) paper.  
+  \begin{itemize} 
+    \item Here goes the very complicated math formula found in the paper. 
+\begin{itemize}
+   \item  Value subconstruct decreases throughout the semester.
+   \item Other subconstructs have no change of very slight increase. 
+   \end{itemize}
+  \end{itemize}
+\end{itemize}
 \end{flushleft}
 
 \newpage
 \begin{flushleft}{\Large MAT1033 ATMI Normalized Gains  }\par
-\large Mean normalized gains for ATMI subconstructs \par
+\vspace{3mm}
+\large Distribution of normalized gains for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
 <<plot8.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
@@ -426,14 +454,19 @@ ggplot(box.ATMI.ng, aes(x=variable, y=value, fill=variable))+
     scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 
 @
-\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\begin{itemize}
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
+  \item Normalized gains were calculated for each following Marx and Cummings (2007) formula. Distributions of normalized gains are graphed boxplots. 
+  \item Boxplot language
+\end{itemize}
 \end{flushleft}
 
 \newpage
 \begin{flushleft}{\Large MAT1033 Math Identity Construct}\par
+\vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-\normalsize On average end of semester math identity is higher than beggining of semester math identity. 
+\normalsize \textbf{On average end of semester math identity is higher than the beginning of semester math identity.}
 <<plot9.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 ## Math IDENTITY
@@ -449,18 +482,19 @@ ggplot(l1, aes(x=factor(variable), y=value)) +
   
 @
 \begin{itemize}
-   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively. 
-  \item Bars indicate mean values of math identity construct. The construct has x items 
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
+  \item Bars indicate mean values of math identity construct. The construct has x questions (0-x scale)
   \end{itemize}
 \end{flushleft}
 
 
 \newpage
 \begin{flushleft}{\Large MAT1033 Normalized Gains for Math Identity}\par
-\large Mean normalized gaiuns for math identity \par
+\vspace{3mm}
+\large Mean normalized gains for math identity \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-
+\normalsize Math identity construct increases throughout the semester. 
 <<plot10.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 #normalized gain for Identity
@@ -470,12 +504,15 @@ ggplot(ng1, aes(x=factor(Term), y=meanMathId.ng)) +
   ylab("Math Identity") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")
 @
-\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\begin{itemize}
+  \item The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively.
+\end{itemize}
 \end{flushleft}
 
 
 \newpage
 \begin{flushleft}{\Large MAT1033 Metacognitive Awareness}\par
+\vspace{3mm}
 \large Beginning and End of semester means of metacognative awareness subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -492,13 +529,22 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
   
 
 @
-\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\begin{itemize}
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
+  \item Bars indicate the mean value of each sobconstruct (i.e Metacognitive Awareness Knowledge and Metacogntive Awareness Regulation) at the beginning and end of the semster.
+  \item Distribution of Metacognitive Awareness..... . 2 subscales are represented %something missing
+  \begin{itemize} 
+    \item Knowledge (5 items, 0-25 scale) %Look up scales 
+    \item Regulation (4 items, 0-20 scale)
+  \end{itemize}
+\end{itemize}
 \end{flushleft}
 
 
 \newpage
 \begin{flushleft}{\Large MAT1033  Normalized Gain for Metacognitive Awareness}\par
-\large Mean normalized gains for M A \par %%% FIX THIS 
+\vspace{3mm}
+\large Mean normalized gains for Metacognative Awareness \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
 
@@ -511,7 +557,9 @@ ggplot(ng2, aes(x=factor(Term), y=meanMetK.ng)) +
   ylab("Metacognitive Awareness") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")
 @
-\large The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16 respectively.
+\begin{itemize}
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
+\end{itemize}
 \end{flushleft}
 
 
@@ -519,13 +567,14 @@ ggplot(ng2, aes(x=factor(Term), y=meanMetK.ng)) +
 %%% Linear Model predicting final grade with the following predictors: gains in ATMI,# metacongiiton, identity, gender, SAT %%% 
 
 \newpage
-
 \begin{flushleft}{\Large MAT1033  Linear Model of Final Grades }\par
+\vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
 \normalsize The following linear model uses the predictors of gains in ATMI, metacognative awareness, identity, gender and SAT score to determine a students final grade.
  \hfill\break
- \normalsize Of these predictors the students GPA* was the only predictor that was statistically significant in predicting the students final grade. 
+ \par
+ \normalsize \textbf{Of these predictors the students GPA* was the only predictor that was statistically significant in predicting the students final grade.}
  %%%% rough draft
 <<plot13.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
@@ -536,6 +585,7 @@ summary(Lm1)
 
 \newpage
 \begin{flushleft}{\Large MAT1033  Linear Model of Post }\par
+\vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
 \normalsize....
@@ -551,8 +601,12 @@ summary(lmOpost)
 
 %% The Remaining LMFITS are the ones that did not really have significant values, consult with rocio to see if we keep or delete%%
 
+
 \newpage
-\begin{flushleft}
+\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\vspace{3mm}
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
 <<plot15.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 LmPre<- lm(MP1$Grd.Pt.Unt~MP1$ATMI.E.pre+MP1$ATMI.M.pre+MP1$ATMI.SC.pre+MP1$ATMI.V.pre)
@@ -562,7 +616,10 @@ summary(LmPre)
 \end{flushleft}
 
 \newpage
-\begin{flushleft}
+\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\vspace{3mm}
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
 <<plot16.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 LmPost<- lm(MP1$Grd.Pt.Unt~MP1$ATMI.E.post+MP1$ATMI.M.post+MP1$ATMI.SC.post+MP1$ATMI.V.post)
@@ -571,7 +628,10 @@ summary(LmPost)
 \end{flushleft}
 
 \newpage
-\begin{flushleft}
+\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\vspace{3mm}
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
 <<plot17.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 lmOpre<- lm(MP1$Grd.Pt.Unt~MP1$OverallATMIpre)
@@ -581,7 +641,10 @@ summary(lmOpre)
 \end{flushleft}
 
 \newpage
-\begin{flushleft}
+\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\vspace{3mm}
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
 <<plot18.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 lmOverall <- lm(MP1$Grd.Pt.Unt~MP1$OverallATMI.ng)
@@ -591,7 +654,10 @@ summary(lmOverall)
 \end{flushleft}
 
 \newpage
-\begin{flushleft}
+\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\vspace{3mm}
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
 <<plot19.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 lmRG <- lm(MP1$Grd.Pt.Unt~MP1$Rawgain)
