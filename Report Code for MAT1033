@@ -177,45 +177,47 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 
 
 \newpage
-\begin{flushleft}{\huge Introduction }\par
+\begin{flushleft}{\LARGE Introduction }\par
  \hfill\break
-\large In the Fall of 2015 and Spring of 2016 students were asked to complete a survey at the beginning and at the end of the semester in MAT1033 (Intermediate Algebra) taught by professor Jeremiah Hower. 
+\normalsize In the Fall of 2015 and Spring of 2016 students were asked to complete a survey at the beginning and at the end of the semester in MAT1033 (Intermediate Algebra) taught by professor Jeremiah Hower. 
  \hfill\break
  \par
-\vspace{5mm}
-\large We measured three scales including the students Attitude Towards Math Inventory (ATMI), Math Identity and Metacognative Awareness. Within the ATMI portion of the assesment, four different constructs were measured: (1) Enjoyment for math, (2) Motivation for math, (3) Self-Confidence in math and (4) Value in Math.Metacognative Awareness on the other hand included two subconstructs: (1) Knowledge and (2) Regulation.
+\vspace{3mm}
+\normalsize We measured three scales including the students Attitude Towards Math Inventory (ATMI), Math Identity and Metacognative Awareness. Within the ATMI portion of the assesment, four different constructs were measured: (1) Enjoyment for math, (2) Motivation for math, (3) Self-Confidence in math and (4) Value in Math.Metacognative Awareness on the other hand included two subconstructs: (1) Knowledge and (2) Regulation.
 \hfill\break
  \par
 (See survey attached to the end of the report)
-\begin{itemize}
-  \item Survey
+\normalsize
+{\begin{itemize}
+  \item \textbf {Survey}
     \begin{itemize} 
-      \item Attitudes Towards Math Inventory
+      \item \textbf {Attitudes Towards Math Inventory}: designed to investigate the underlying dimensions of attitudes toward mathematics.
         \begin{itemize} 
-          \item Enjoyment
-          \item Motivation
-          \item Self Confidence
-          \item Value
+          \item \textbf {Enjoyment} : The enjoyment of mathematics category was designed to measure the degree to which students enjoy working mathematics and mathematics classes.
+          \item \textbf {Motivation}: The motivation category was designed to measure interest in mathematics and desire to pursue studies in mathematics.
+          \item \textbf {Self Confidence}: The confidence category was designed to measure students’ confidence and self-concept of their performance in mathematics.
+          \item \textbf {Value}: The value of mathematics category was designed to measure students’ beliefs on the usefulness, relevance and worth of mathematics in their life now and in the future.
         \end{itemize} 
       \end{itemize}
     \begin{itemize}
-      \item Math Identity
+      \item \textbf {Math Identity}
     \end{itemize}
     \begin{itemize}
-      \item Metacognition Awareness
+      \item \textbf {Metacognition Awareness}
          \begin{itemize} 
-          \item Knowledge
-          \item Regulation
+          \item \textbf {Knowledge}
+          \item \textbf {Regulation}
           \end{itemize}
     \end{itemize}
 \end{itemize} 
 \begin{itemize}
-  \item Survey Sample
+  \item \textbf {Survey Sample}
     \begin{itemize}
-      \item Fall 2015 = Number of students who took the ATMI at the start of the semester and at the end of the semester
-      \item Spring 2016 = Number of students who took the ATMI at the start of the semester and at the end of the semester
+      \item \textbf {Fall 2015} = 97 students took the ATMI at the start of the semester and at the end of the semester
+      \item \textbf {Spring 2016} = 39 students took the ATMI at the start of the semester and at the end of the semester
+      \item 136 students took the survey in total
     \end{itemize}
-\end{itemize}
+\end{itemize}}
 \vspace{5mm}
 \end{flushleft} 
 
@@ -240,7 +242,8 @@ theme(legend.position="none")+ #this removes the legend
 
 
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean scores of ATMI subscales:
   \begin{itemize}
@@ -249,7 +252,7 @@ theme(legend.position="none")+ #this removes the legend
     \item Self confidence (5 items, 0-25 scale)
     \item Value (5 items, 0-25 scale)
   \end{itemize}
-\end{itemize}
+\end{itemize}}
 \end{flushleft}
 
 \newpage
@@ -273,7 +276,8 @@ ggplot(o, aes(x=factor(variable), y=value)) +
     scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean scores of ATMI subscales:
   \begin{itemize}
@@ -282,7 +286,7 @@ ggplot(o, aes(x=factor(variable), y=value)) +
     \item Self confidence (5 items, 0-25 scale)
     \item Value (5 items, 0-25 scale)
   \end{itemize}
-\end{itemize}
+\end{itemize}}
 \end{flushleft}
 
 \newpage
@@ -307,7 +311,8 @@ ggplot(lo, aes(x=factor(variable), y=value)) +
                          breaks=c("pre", "post"),
                          labels=c("Beginning of \n Semester", "End of \n Semester "))
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean scores of ATMI subscales:
   \begin{itemize}
@@ -316,7 +321,7 @@ ggplot(lo, aes(x=factor(variable), y=value)) +
     \item Self confidence (5 items, 0-25 scale)
     \item Value (5 items, 0-25 scale)
   \end{itemize}
-\end{itemize}
+\end{itemize}}
 \end{flushleft}
 
 \newpage
@@ -334,17 +339,18 @@ ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
   scale_fill_brewer(direction=-1, palette="Paired")+
     scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
-  \item Boxplot Language ; 
-  \item Distribution of ATMI pre-cores for students. 4 subscales are represented
+  \item  The box plot represents the differential between individal responses for teaching distribution in P\&T decisions in theory minus in practice. Thus, a positive score represents an individual that indicated a greater percentage in teaching distribution in theory than in practice. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
+  \item Distribution of ATMI pre-scores for students. 4 subscales are represented
   \begin{itemize} 
     \item Enjoyment (5 items, 0-25 scale)
     \item Motivation (4 items, 0-20 scale)
     \item Self confidence (5 items, 0-25 scale)
     \item Value (5 items, 0-25 scale)
   \end{itemize}
-\end{itemize}
+\end{itemize}}
 \end{flushleft}
 
 \newpage
@@ -363,17 +369,18 @@ ggplot(box.ATMI.post, aes(x=variable, y=value, fill=variable))+
   scale_fill_brewer(direction=-1, palette="Paired")+
     scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
-  \item Boxplot Language ; 
-  \item Distribution of ATMI pre-cores for students. 4 subscales are represented
+  \item The box plot represents the differential between individal responses for teaching distribution in P\&T decisions in theory minus in practice. Thus, a positive score represents an individual that indicated a greater percentage in teaching distribution in theory than in practice. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
+  \item Distribution of ATMI pre-scores for students. 4 subscales are represented
   \begin{itemize} 
     \item Enjoyment (5 items, 0-25 scale)
     \item Motivation (4 items, 0-20 scale)
     \item Self confidence (5 items, 0-25 scale)
     \item Value (5 items, 0-25 scale)
   \end{itemize}
-\end{itemize}
+\end{itemize}}
 \end{flushleft}
 
 
@@ -393,17 +400,18 @@ ggplot(box.ATMI.pp, aes(x=variable, y=value))+
   scale_fill_brewer(direction=-1, palette="Paired")+ 
   scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
-  \item Boxplot Language ; 
-  \item Distribution of ATMI pre-cores for students. 4 subscales are represented
+  \item The box plot represents the differential between individal responses for teaching distribution in P\&T decisions in theory minus in practice. Thus, a positive score represents an individual that indicated a greater percentage in teaching distribution in theory than in practice. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles). %%%% FIX WITH WHAT YOU ARE ACTUALLY GONNA WRITE
+  \item Distribution of ATMI pre-scores for students. 4 subscales are represented
   \begin{itemize} 
     \item Enjoyment (5 items, 0-25 scale)
     \item Motivation (4 items, 0-20 scale)
     \item Self confidence (5 items, 0-25 scale)
     \item Value (5 items, 0-25 scale)
   \end{itemize}
-\end{itemize}
+\end{itemize}}
 \end{flushleft}
 
 \newpage
@@ -424,17 +432,21 @@ ggplot(ngl, aes(x=factor(variable), y=value)) +
   scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 
 @
-\begin{itemize}
+\normalsize 
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
-  \item Normalized Gains- normalized change score calculated by following Marx and Cummings (2007) paper.  
+  \item Normalized Gains- normalized change score calculated by following Marx and Cummings (2007) paper.
   \begin{itemize} 
-    \item Here goes the very complicated math formula found in the paper. 
+    \item \begin{equation} 
+c=\lbrace \frac{{pre-post}}
+  {{100-pre}}   if post>pre 
+\end{equation} 
+\end{itemize}
+\end{itemize}
 \begin{itemize}
    \item  Value subconstruct decreases throughout the semester.
    \item Other subconstructs have no change of very slight increase. 
-   \end{itemize}
-  \end{itemize}
-\end{itemize}
+\end{itemize}}
 \end{flushleft}
 
 \newpage
@@ -454,11 +466,12 @@ ggplot(box.ATMI.ng, aes(x=variable, y=value, fill=variable))+
     scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
 
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Normalized gains were calculated for each following Marx and Cummings (2007) formula. Distributions of normalized gains are graphed boxplots. 
-  \item Boxplot language
-\end{itemize}
+  \item The box plot represents the differential between individal responses for teaching distribution in P\&T decisions in theory minus in practice. Thus, a positive score represents an individual that indicated a greater percentage in teaching distribution in theory than in practice. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
+\end{itemize}}
 \end{flushleft}
 
 \newpage
@@ -481,10 +494,11 @@ ggplot(l1, aes(x=factor(variable), y=value)) +
   scale_x_discrete(labels=c("Beginning of Semester","End of Semester"))
   
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean values of math identity construct. The construct has x questions (0-x scale)
-  \end{itemize}
+  \end{itemize}}
 \end{flushleft}
 
 
@@ -504,9 +518,10 @@ ggplot(ng1, aes(x=factor(Term), y=meanMathId.ng)) +
   ylab("Math Identity") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
   \item The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively.
-\end{itemize}
+\end{itemize}}
 \end{flushleft}
 
 
@@ -529,7 +544,8 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
   
 
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate the mean value of each sobconstruct (i.e Metacognitive Awareness Knowledge and Metacogntive Awareness Regulation) at the beginning and end of the semster.
   \item Distribution of Metacognitive Awareness..... . 2 subscales are represented %something missing
@@ -537,7 +553,7 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
     \item Knowledge (5 items, 0-25 scale) %Look up scales 
     \item Regulation (4 items, 0-20 scale)
   \end{itemize}
-\end{itemize}
+\end{itemize}}
 \end{flushleft}
 
 
@@ -557,9 +573,12 @@ ggplot(ng2, aes(x=factor(Term), y=meanMetK.ng)) +
   ylab("Metacognitive Awareness") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")
 @
-\begin{itemize}
+\normalsize
+{\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
-\end{itemize}
+   \item Normalized gains were calculated for each following Marx and Cummings (2007) formula.
+   \item Scale : 
+\end{itemize}}
 \end{flushleft}
 
 
@@ -674,7 +693,7 @@ summary(lmRG)
 \end{flushleft} 
 
 \newpage
-\begin{flushleft}{\huge Reference Page }\par
+\begin{flushleft}{\huge References}\par
 \large 
 \vspace{5mm}
 \end{flushleft} 
