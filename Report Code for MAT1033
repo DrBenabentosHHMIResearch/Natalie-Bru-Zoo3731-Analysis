@@ -161,30 +161,13 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 \vspace*{\fill}
 \end{titlepage}
 
-\newpage
-\begin{flushleft}{\Huge Table of Contents }\par
- \hfill\break
-\large Introduction \par
-\large ATMI Pre-Semester Bargraph \par
-\large ATMI Post-Semester Bargraph \par
-\large ATMI Pre-Post Comparison Bargraph \par
-\large ATMI Pre-Semester Boxplot \par
-\large ATMI Post-Semester Boxplot \par
-\large ATMI Pre-Post Comparison Boxplot \par
-\large ATMI  Normalized Gains \par
-\large ATMI Normalized Gains Boxplot \par 
-\large Math Identity \par
-\large Normalized Gains of Math Identity \par
-\large Metacognative Awareness  \par
-\large Normalized Gains for Metacognative Awareness   \par
-\large Statistically Significant Linear Models \par
-\large Statistically Insignificant Linear Models \par
-\vspace{5mm}
-\end{flushleft}
-
 
 \newpage
-\begin{flushleft}{\LARGE Introduction }\par
+\tableofcontents
+
+\newpage
+\section{Introduction}
+\begin{flushleft}
  \hfill\break
 \normalsize In the Fall of 2015 and Spring of 2016 students were asked to complete a survey at the beginning and at the end of the semester in MAT1033 (Intermediate Algebra) taught by professor Jeremiah Hower. 
  \hfill\break
@@ -229,7 +212,9 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 \end{flushleft} 
 
 \newpage
-\begin{flushleft}{\Large MAT1033 ATMI Start of Semester Bargraph }\par
+\section{ATMI Bargraphs}
+\subsection{ATMI Start of Semester Bargraph}
+\begin{flushleft}
 \vspace{3mm}
 \large Mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
@@ -263,7 +248,8 @@ theme(legend.position="none")+ #this removes the legend
 \end{flushleft}
 
 \newpage
-\begin{flushleft}{\Large MAT1033 ATMI End of Semester Bargraph }\par
+\subsection{ATMI End of Semester Bargraph}
+\begin{flushleft}
 \vspace{3mm}
 \large Mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
@@ -297,7 +283,8 @@ ggplot(o, aes(x=factor(variable), y=value)) +
 \end{flushleft}
 
 \newpage
-\begin{flushleft}{\Large MAT1033 ATMI Beginning and End of Semester Comparison Bargraph }\par
+\subsection{ATMI Beginning and End of Semester Comparison Bargraph}
+\begin{flushleft}
 \vspace{3mm}
 \large Mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
@@ -332,7 +319,9 @@ ggplot(lo, aes(x=factor(variable), y=value)) +
 \end{flushleft}
 
 \newpage
-\begin{flushleft}{\Large MAT1033 ATMI Beginning of Semester Boxplot  }\par
+\section{ATMI Boxplots}
+\subsection{ATMI Beginning of Semester Boxplot}
+\begin{flushleft}
 \vspace{3mm}
 \large Distribution of mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
@@ -361,7 +350,8 @@ ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
 \end{flushleft}
 
 \newpage
-\begin{flushleft}{\Large MAT1033 ATMI End of Semester Boxplot  }\par
+\subsection{ATMI End of Semester Boxplot}
+\begin{flushleft}
 \vspace{3mm}
 \large Distribution of mean scores for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
@@ -392,6 +382,7 @@ ggplot(box.ATMI.post, aes(x=variable, y=value, fill=variable))+
 
 
 \newpage
+\subsection{ATMI Beginning and End of Semester Comparison Boxplot}
 \begin{flushleft}{\Large MAT1033 ATMI Beginning and End of Semester Comparison Boxplot  }\par
 \vspace{3mm}
 \large Distribution of mean scores for ATMI subconstructs \par
@@ -422,7 +413,9 @@ ggplot(box.ATMI.pp, aes(x=variable, y=value))+
 \end{flushleft}
 
 \newpage
-\begin{flushleft}{\Large MAT1033 ATMI Normalized Gains Boxplot }\par
+\section{ATMI Normalized Gains}
+\subsection{ATMI Normalized Gains Boxplot}
+\begin{flushleft}
 \vspace{3mm}
 \large Mean normalized gains for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
@@ -443,20 +436,19 @@ ggplot(ngl, aes(x=factor(variable), y=value)) +
 {\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Normalized Gains- normalized change score calculated by following Marx and Cummings (2007) paper.
-  \begin{itemize} 
-    \item  
+ 
   \[
          c=\left\{
                 \begin{array}{ll}
-                  \frac{post-pre}{100-pre}\\
-                  drop \\
-                  0\\
-                  \frac {post-pre}{pre}\\
+                  \frac{post-pre}{100-pre} & if pre>post \\
+                  drop & if post = pre = 100 or 0\\
+                  0 & if 0 < post = pre < 100\\
+                  \frac {post-pre}{pre} & if post < pre\\
                 \end{array}
               \right.
   \]
 
-\end{itemize}
+
 \end{itemize}
 
 \begin{itemize}
@@ -466,7 +458,8 @@ ggplot(ngl, aes(x=factor(variable), y=value)) +
 \end{flushleft}
 
 \newpage
-\begin{flushleft}{\Large MAT1033 ATMI Normalized Gains  }\par
+\subsection{ATMI Normalized Gains Data}
+\begin{flushleft}
 \vspace{3mm}
 \large Distribution of normalized gains for ATMI subconstructs \par
 \large  Fall '15 and Spring '16 \par
@@ -491,7 +484,9 @@ ggplot(box.ATMI.ng, aes(x=variable, y=value, fill=variable))+
 \end{flushleft}
 
 \newpage
-\begin{flushleft}{\Large MAT1033 Math Identity Construct}\par
+\section{Math Identity Construct Data}
+\subsection{Math Identity Construct}
+\begin{flushleft}
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -519,6 +514,7 @@ ggplot(l1, aes(x=factor(variable), y=value)) +
 
 
 \newpage
+\subsection{Normalized Gains for Math Identity}
 \begin{flushleft}{\Large MAT1033 Normalized Gains for Math Identity}\par
 \vspace{3mm}
 \large Mean normalized gains for math identity \par
@@ -542,7 +538,9 @@ ggplot(ng1, aes(x=factor(Term), y=meanMathId.ng)) +
 
 
 \newpage
-\begin{flushleft}{\Large MAT1033 Metacognitive Awareness}\par
+\section{Metacognitive Awareness Data}
+\subsection{ Metacognitive Awareness}
+\begin{flushleft}
 \vspace{3mm}
 \large Beginning and End of semester means of metacognative awareness subconstructs \par
 \large  Fall '15 and Spring '16 \par
@@ -582,12 +580,12 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
 
 
 \newpage
+\subsection{Normalized Gain for Metacognitive Awareness}
 \begin{flushleft}{\Large MAT1033  Normalized Gain for Metacognitive Awareness}\par
 \vspace{3mm}
 \large Mean normalized gains for Metacognative Awareness \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-
 <<plot12.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 #normalized gain for Metacognition
@@ -596,7 +594,8 @@ ggplot(l3, aes(x=factor(variable), y=value)) +
   facet_grid(Term ~.)+
   theme(legend.position="none")+ #this removes the legend
   ylab("ATMI Mean Score") + xlab("")+
-  scale_fill_brewer(direction=-1, palette="Paired")
+  scale_fill_brewer(direction=-1, palette="Paired")+
+  scale_x_discrete(labels=c("Mean MA \n Knowledge ", "Mean MA \n Regulation ","Mean MA \n Overall"))
 @
 \normalsize
 {\begin{itemize}
@@ -610,7 +609,10 @@ ggplot(l3, aes(x=factor(variable), y=value)) +
 
 %%% Linear Model predicting final grade with the following predictors: gains in ATMI,# metacongiiton, identity, gender, SAT %%% 
 
+
 \newpage
+\section{Significant Linear Models}
+\subsection{Linear Model of Final Grades}
 \begin{flushleft}{\Large MAT1033  Linear Model of Final Grades }\par
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
@@ -628,7 +630,8 @@ summary(Lm1)
 \end{flushleft}
 
 \newpage
-\begin{flushleft}{\Large MAT1033  Linear Model of Post }\par
+\subsection{Linear Model of End of Semester}
+\begin{flushleft}{\Large MAT1033  Linear Model of End of Semester }\par
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -645,8 +648,9 @@ summary(lmOpost)
 
 %% The Remaining LMFITS are the ones that did not really have significant values, consult with rocio to see if we keep or delete%%
 
-
 \newpage
+\section{Other Linear Models}
+\subsection{Nonsignificant Linear Model}
 \begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
@@ -660,6 +664,7 @@ summary(LmPre)
 \end{flushleft}
 
 \newpage
+\subsection{Nonsignificant Linear Model}
 \begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
@@ -672,6 +677,7 @@ summary(LmPost)
 \end{flushleft}
 
 \newpage
+\subsection{Nonsignificant Linear Model}
 \begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
@@ -685,6 +691,7 @@ summary(lmOpre)
 \end{flushleft}
 
 \newpage
+\subsection{Nonsignificant Linear Model}
 \begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
@@ -698,6 +705,7 @@ summary(lmOverall)
 \end{flushleft}
 
 \newpage
+\subsection{Nonsignificant Linear Model}
 \begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
@@ -712,12 +720,14 @@ summary(lmRG)
 \end{flushleft}
 
 \newpage
+\section{Appendix}
 \begin{flushleft}{\huge Appendix }\par
 \large 
 \vspace{5mm}
 \end{flushleft} 
 
 \newpage
+\section{References}
 \begin{flushleft}{\huge References}\par
 \large 
 \vspace{5mm}
