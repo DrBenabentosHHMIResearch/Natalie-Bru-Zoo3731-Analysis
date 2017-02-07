@@ -118,13 +118,20 @@ ls(ATMIdf)
 m2 <- ddply(ATMIdf, "Term", summarise, meanmetk.pre = mean(Metacog.K.pre, na.rm=TRUE),
            meanmetk.post = mean(Metacog.K.post, na.rm=TRUE),
            meanmetr.pre = mean(Metacog.R.pre, na.rm=TRUE),
-           meanmetr.post = mean(Metacog.R.post, na.rm=TRUE))
+           meanmetr.post = mean(Metacog.R.post, na.rm=TRUE),
+           meanmet.pre = mean(Metacog.pre, na.rm=TRUE),
+           meanmet.post =mean(Metacog.post, na.rm=TRUE))
 
-l2 <- melt(m2[,c("Term","meanmetk.pre","meanmetk.post","meanmetr.pre","meanmetr.post")], id.vars=c("Term"))
+l2 <- melt(m2[,c("Term","meanmetk.pre","meanmetk.post","meanmetr.pre","meanmetr.post","meanmet.pre","meanmet.post")], id.vars=c("Term"))
+
 
 #normalized gain for Metacognition 
+table(ATMIdf$MetK.ng)
 ng2 <- ddply(ATMIdf, "Term", summarise, meanMetK.ng = mean(MetK.ng, na.rm=TRUE),
-            meanMetK.ng = mean(MetK.ng, na.rm=TRUE))
+            meanMetR.ng = mean(MetR.ng, na.rm=TRUE),
+            meanmet.ng = mean(Met.ng,na.rm=TRUE))
+
+l3 <- melt(ng2[,c("Term","meanMetK.ng","meanMetR.ng","meanmet.ng")], id.vars=c("Term"))
 
 #### Linear Model predicting final grade with the following predictors: gains in ATMI,#
 #metacongiiton, identity, gender, SAT.##########
@@ -200,13 +207,13 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
         \end{itemize} 
       \end{itemize}
     \begin{itemize}
-      \item \textbf {Math Identity}
+      \item \textbf {Math Identity} : 
     \end{itemize}
     \begin{itemize}
-      \item \textbf {Metacognition Awareness}
+      \item \textbf {Metacognition Awareness}: Metacognition refers to the ability to reflect upon,understand,and control one's learning.
          \begin{itemize} 
-          \item \textbf {Knowledge}
-          \item \textbf {Regulation}
+          \item \textbf {Knowledge} - Knowledge about cognition incudes three subprocesses that facilitate the reflective aspect of metacognition:(1) declarative knowledge (i.e., knowledge about self and about strategies), (2) procedural knowledge (i.e., knowledge about how to use strategies), and (3) conditional knowledge (i.e., knowledge about when and why to use strategies).(Artzt and Armour-Thomas, 1992; baker,1989).
+          \item \textbf {Regulation} - Regulation of cognition included a number of subprocesses that facilitate the control aspect of learning. Five component skills of regulation have been discussed extensively, including (1) planning, (2) information management strategies, (3) comprehension monitoring, (4) debugging strategies, and (5) evaluation. (Artzt and Armour-Thomas, 1992; baker,1989).
           \end{itemize}
     \end{itemize}
 \end{itemize} 
@@ -342,7 +349,7 @@ ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
 \normalsize
 {\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
-  \item  The box plot represents the differential between individal responses for teaching distribution in P\&T decisions in theory minus in practice. Thus, a positive score represents an individual that indicated a greater percentage in teaching distribution in theory than in practice. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
+  \item  The box plot represents the distribution of students ATMI scores by subconstructs at the beginning of the semester. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
   \item Distribution of ATMI pre-scores for students. 4 subscales are represented
   \begin{itemize} 
     \item Enjoyment (5 items, 0-25 scale)
@@ -372,7 +379,7 @@ ggplot(box.ATMI.post, aes(x=variable, y=value, fill=variable))+
 \normalsize
 {\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
-  \item The box plot represents the differential between individal responses for teaching distribution in P\&T decisions in theory minus in practice. Thus, a positive score represents an individual that indicated a greater percentage in teaching distribution in theory than in practice. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
+  \item The box plot represents the distribution of students ATMI scores by subconstructs at the end of the semester. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
   \item Distribution of ATMI pre-scores for students. 4 subscales are represented
   \begin{itemize} 
     \item Enjoyment (5 items, 0-25 scale)
@@ -403,7 +410,7 @@ ggplot(box.ATMI.pp, aes(x=variable, y=value))+
 \normalsize
 {\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
-  \item The box plot represents the differential between individal responses for teaching distribution in P\&T decisions in theory minus in practice. Thus, a positive score represents an individual that indicated a greater percentage in teaching distribution in theory than in practice. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles). %%%% FIX WITH WHAT YOU ARE ACTUALLY GONNA WRITE
+  \item The box plot represents the compatison of the distribution of students ATMI scores by subconstructs from the beginning of the semester and the end of the semester. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles). %%%% FIX WITH WHAT YOU ARE ACTUALLY GONNA WRITE
   \item Distribution of ATMI pre-scores for students. 4 subscales are represented
   \begin{itemize} 
     \item Enjoyment (5 items, 0-25 scale)
@@ -437,12 +444,21 @@ ggplot(ngl, aes(x=factor(variable), y=value)) +
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Normalized Gains- normalized change score calculated by following Marx and Cummings (2007) paper.
   \begin{itemize} 
-    \item \begin{equation} 
-c=\lbrace \frac{{pre-post}}
-  {{100-pre}}   if post>pre 
-\end{equation} 
+    \item  
+  \[
+         c=\left\{
+                \begin{array}{ll}
+                  \frac{post-pre}{100-pre}\\
+                  drop \\
+                  0\\
+                  \frac {post-pre}{pre}\\
+                \end{array}
+              \right.
+  \]
+
 \end{itemize}
 \end{itemize}
+
 \begin{itemize}
    \item  Value subconstruct decreases throughout the semester.
    \item Other subconstructs have no change of very slight increase. 
@@ -470,7 +486,7 @@ ggplot(box.ATMI.ng, aes(x=variable, y=value, fill=variable))+
 {\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Normalized gains were calculated for each following Marx and Cummings (2007) formula. Distributions of normalized gains are graphed boxplots. 
-  \item The box plot represents the differential between individal responses for teaching distribution in P\&T decisions in theory minus in practice. Thus, a positive score represents an individual that indicated a greater percentage in teaching distribution in theory than in practice. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
+  \item The box plot represents the distribution of normalized gains for  ATMI scores by subconstructs.The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
 \end{itemize}}
 \end{flushleft}
 
@@ -497,7 +513,7 @@ ggplot(l1, aes(x=factor(variable), y=value)) +
 \normalsize
 {\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
-  \item Bars indicate mean values of math identity construct. The construct has x questions (0-x scale)
+  \item Bars indicate mean values of math identity construct. The construct has 12 questions (12-60 scale)
   \end{itemize}}
 \end{flushleft}
 
@@ -538,9 +554,9 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
   geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
   facet_grid(Term ~.)+
   theme(legend.position="none")+ #this removes the legend
-  ylab("Metacognative Awareness") + xlab("")+
+  ylab("ATMI Mean Score") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")+
-  scale_x_discrete(labels=c("MA Knowledge \n Beginning of Semester ","MA Knowledge \n End of Semester","MA Regulation \n Beginning of Semester ","MA Regulation \n End of Semester"))
+  scale_x_discrete(labels=c("Mean MA \n Overall \n  Pre", "Mean MA \n Overall \n Post","MA \n Knowledge \n Pre ","MA \n Knowledge \n Post","MA \n Regulation \n Pre ","MA \n Regulation \n Post"))
   
 
 @
@@ -550,8 +566,16 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
   \item Bars indicate the mean value of each sobconstruct (i.e Metacognitive Awareness Knowledge and Metacogntive Awareness Regulation) at the beginning and end of the semster.
   \item Distribution of Metacognitive Awareness..... . 2 subscales are represented %something missing
   \begin{itemize} 
-    \item Knowledge (5 items, 0-25 scale) %Look up scales 
-    \item Regulation (4 items, 0-20 scale)
+    \item Knowledge (8 items, 8-40 scale) 
+    \item Regulation (11 items, 11-55 scale)
+  \begin{itemize}
+    \item \textbf {Note}: Acronmyms were used to label the graph. 
+    \begin{itemize} 
+      \item MA- Metagocnative Awareness
+      \item Pre- Beginning of Semester
+      \item Post- End of Semester
+    \end{itemize}
+  \end{itemize}
   \end{itemize}
 \end{itemize}}
 \end{flushleft}
@@ -567,17 +591,18 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
 <<plot12.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 #normalized gain for Metacognition
-ggplot(ng2, aes(x=factor(Term), y=meanMetK.ng)) +
-  geom_bar(stat="identity",aes(fill=factor(Term)))+
+ggplot(l3, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)+
   theme(legend.position="none")+ #this removes the legend
-  ylab("Metacognitive Awareness") + xlab("")+
+  ylab("ATMI Mean Score") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")
 @
 \normalsize
 {\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
    \item Normalized gains were calculated for each following Marx and Cummings (2007) formula.
-   \item Scale : 
+   \item Scale (19 items, 19-95 scale)
 \end{itemize}}
 \end{flushleft}
 
