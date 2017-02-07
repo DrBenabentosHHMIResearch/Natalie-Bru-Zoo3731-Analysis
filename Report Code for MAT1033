@@ -1,4 +1,5 @@
 
+
 \documentclass[12pt]{article}
 \usepackage[margin=0.8in]{geometry}
 \usepackage{relsize,setspace}
@@ -581,7 +582,7 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
 
 \newpage
 \subsection{Normalized Gain for Metacognitive Awareness}
-\begin{flushleft}{\Large MAT1033  Normalized Gain for Metacognitive Awareness}\par
+\begin{flushleft}
 \vspace{3mm}
 \large Mean normalized gains for Metacognative Awareness \par
 \large  Fall '15 and Spring '16 \par
@@ -613,7 +614,7 @@ ggplot(l3, aes(x=factor(variable), y=value)) +
 \newpage
 \section{Significant Linear Models}
 \subsection{Linear Model of Final Grades}
-\begin{flushleft}{\Large MAT1033  Linear Model of Final Grades }\par
+\begin{flushleft}
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -631,7 +632,7 @@ summary(Lm1)
 
 \newpage
 \subsection{Linear Model of End of Semester}
-\begin{flushleft}{\Large MAT1033  Linear Model of End of Semester }\par
+\begin{flushleft}
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -651,7 +652,7 @@ summary(lmOpost)
 \newpage
 \section{Other Linear Models}
 \subsection{Nonsignificant Linear Model}
-\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\begin{flushleft}
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -665,7 +666,7 @@ summary(LmPre)
 
 \newpage
 \subsection{Nonsignificant Linear Model}
-\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\begin{flushleft}
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -678,7 +679,7 @@ summary(LmPost)
 
 \newpage
 \subsection{Nonsignificant Linear Model}
-\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\begin{flushleft}
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -692,7 +693,7 @@ summary(lmOpre)
 
 \newpage
 \subsection{Nonsignificant Linear Model}
-\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\begin{flushleft}
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -706,7 +707,7 @@ summary(lmOverall)
 
 \newpage
 \subsection{Nonsignificant Linear Model}
-\begin{flushleft}{\Large MAT1033 Nonsignificant Linear Model}\par
+\begin{flushleft}
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
@@ -721,14 +722,14 @@ summary(lmRG)
 
 \newpage
 \section{Appendix}
-\begin{flushleft}{\huge Appendix }\par
+\begin{flushleft}
 \large 
 \vspace{5mm}
 \end{flushleft} 
 
 \newpage
 \section{References}
-\begin{flushleft}{\huge References}\par
+\begin{flushleft}
 \large 
 \vspace{5mm}
 \end{flushleft} 
