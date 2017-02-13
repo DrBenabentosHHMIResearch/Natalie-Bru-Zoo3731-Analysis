@@ -1,5 +1,4 @@
 
-
 \documentclass[12pt]{article}
 \usepackage[margin=0.8in]{geometry}
 \usepackage{relsize,setspace}
@@ -10,7 +9,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{Jeremiah Hower MAT1033 }
-\lhead{Summary Report Draft}
+\lhead{Summary Report}
 \rfoot{Page \thepage}
 \renewcommand{\headrulewidth}{0.4pt} %thickness of the header line
 \renewcommand{\headrule}{\hbox to\headwidth{%
@@ -116,14 +115,15 @@ ng1 <- ddply(ATMIdf, "Term", summarise, meanMathId.ng = mean(MathId.ng, na.rm=TR
 
 #Metacognition pre and post
 ls(ATMIdf)
-m2 <- ddply(ATMIdf, "Term", summarise, meanmetk.pre = mean(Metacog.K.pre, na.rm=TRUE),
-           meanmetk.post = mean(Metacog.K.post, na.rm=TRUE),
-           meanmetr.pre = mean(Metacog.R.pre, na.rm=TRUE),
-           meanmetr.post = mean(Metacog.R.post, na.rm=TRUE),
-           meanmet.pre = mean(Metacog.pre, na.rm=TRUE),
-           meanmet.post =mean(Metacog.post, na.rm=TRUE))
+m2 <- ddply(ATMIdf, "Term", summarise, meanmetk.pre = (mean(Metacog.K.pre, na.rm=TRUE)/40*100),
+           meanmetk.post = (mean(Metacog.K.post, na.rm=TRUE)/40*100),
+           meanmetr.pre = (mean(Metacog.R.pre, na.rm=TRUE)/55*100),
+           meanmetr.post = (mean(Metacog.R.post, na.rm=TRUE)/55*100),
+           meanmet.pre = (mean(Metacog.pre, na.rm=TRUE)/95*100),
+           meanmet.post =(mean(Metacog.post, na.rm=TRUE)/95*100))
 
 l2 <- melt(m2[,c("Term","meanmetk.pre","meanmetk.post","meanmetr.pre","meanmetr.post","meanmet.pre","meanmet.post")], id.vars=c("Term"))
+
 
 
 #normalized gain for Metacognition 
@@ -155,7 +155,7 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 \begin{titlepage}\centering
 \topskip0pt
 \vspace*{\fill}
-\Huge Student Affective Measures*  \par
+\Huge Student Affective Measures \par
 \Huge MAT 1033 Intermediate Algebra \par
 \Huge Jeremiah Hower \par
 \Huge  Fall '15 and Spring '16 \par
@@ -191,7 +191,7 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
         \end{itemize} 
       \end{itemize}
     \begin{itemize}
-      \item \textbf {Math Identity} : 
+      \item \textbf {Math Identity}: is how students percieve themselves as mathematicians. The primary influencing components of a students identity are (1)Interest-personal desire to learn/understand more math,(2) Competence - belief in ability to understand math content, (3) Performance - belief in ability to perform math tasks and (4) Recognition- being recognized by others as a math person. 
     \end{itemize}
     \begin{itemize}
       \item \textbf {Metacognition Awareness}: Metacognition refers to the ability to reflect upon,understand,and control one's learning.
@@ -240,10 +240,10 @@ theme(legend.position="none")+ #this removes the legend
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean scores of ATMI subscales:
   \begin{itemize}
-    \item Enjoyment (5 items, 0-25 scale)
-    \item Motivation (4 items, 0-20 scale)
-    \item Self confidence (5 items, 0-25 scale)
-    \item Value (5 items, 0-25 scale)
+    \item Enjoyment (5 items, 5-25 scale)
+    \item Motivation (4 items, 4-20 scale)
+    \item Self confidence (5 items, 5-25 scale)
+    \item Value (5 items, 5-25 scale)
   \end{itemize}
 \end{itemize}}
 \end{flushleft}
@@ -275,10 +275,10 @@ ggplot(o, aes(x=factor(variable), y=value)) +
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean scores of ATMI subscales:
   \begin{itemize}
-    \item Enjoyment (5 items, 0-25 scale)
-    \item Motivation (4 items, 0-20 scale)
-    \item Self confidence (5 items, 0-25 scale)
-    \item Value (5 items, 0-25 scale)
+    \item Enjoyment (5 items, 5-25 scale)
+    \item Motivation (4 items, 4-20 scale)
+    \item Self confidence (5 items, 5-25 scale)
+    \item Value (5 items, 5-25 scale)
   \end{itemize}
 \end{itemize}}
 \end{flushleft}
@@ -311,10 +311,10 @@ ggplot(lo, aes(x=factor(variable), y=value)) +
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate mean scores of ATMI subscales:
   \begin{itemize}
-    \item Enjoyment (5 items, 0-25 scale)
-    \item Motivation (4 items, 0-20 scale)
-    \item Self confidence (5 items, 0-25 scale)
-    \item Value (5 items, 0-25 scale)
+    \item Enjoyment (5 items, 5-25 scale)
+    \item Motivation (4 items, 4-20 scale)
+    \item Self confidence (5 items, 5-25 scale)
+    \item Value (5 items, 5-25 scale)
   \end{itemize}
 \end{itemize}}
 \end{flushleft}
@@ -342,10 +342,10 @@ ggplot(box.ATMI.pre, aes(x=variable, y=value, fill=variable))+
   \item  The box plot represents the distribution of students ATMI scores by subconstructs at the beginning of the semester. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
   \item Distribution of ATMI pre-scores for students. 4 subscales are represented
   \begin{itemize} 
-    \item Enjoyment (5 items, 0-25 scale)
-    \item Motivation (4 items, 0-20 scale)
-    \item Self confidence (5 items, 0-25 scale)
-    \item Value (5 items, 0-25 scale)
+    \item Enjoyment (5 items, 5-25 scale)
+    \item Motivation (4 items, 4-20 scale)
+    \item Self confidence (5 items, 5-25 scale)
+    \item Value (5 items, 5-25 scale)
   \end{itemize}
 \end{itemize}}
 \end{flushleft}
@@ -373,10 +373,10 @@ ggplot(box.ATMI.post, aes(x=variable, y=value, fill=variable))+
   \item The box plot represents the distribution of students ATMI scores by subconstructs at the end of the semester. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles).
   \item Distribution of ATMI pre-scores for students. 4 subscales are represented
   \begin{itemize} 
-    \item Enjoyment (5 items, 0-25 scale)
-    \item Motivation (4 items, 0-20 scale)
-    \item Self confidence (5 items, 0-25 scale)
-    \item Value (5 items, 0-25 scale)
+    \item Enjoyment (5 items, 5-25 scale)
+    \item Motivation (4 items, 4-20 scale)
+    \item Self confidence (5 items, 5-25 scale)
+    \item Value (5 items, 5-25 scale)
   \end{itemize}
 \end{itemize}}
 \end{flushleft}
@@ -405,10 +405,10 @@ ggplot(box.ATMI.pp, aes(x=variable, y=value))+
   \item The box plot represents the compatison of the distribution of students ATMI scores by subconstructs from the beginning of the semester and the end of the semester. The middle bar represents the median. The upper and lower 'hinges' correspond to the first and third quartile (25th and 75th percentiles). %%%% FIX WITH WHAT YOU ARE ACTUALLY GONNA WRITE
   \item Distribution of ATMI pre-scores for students. 4 subscales are represented
   \begin{itemize} 
-    \item Enjoyment (5 items, 0-25 scale)
-    \item Motivation (4 items, 0-20 scale)
-    \item Self confidence (5 items, 0-25 scale)
-    \item Value (5 items, 0-25 scale)
+    \item Enjoyment (5 items, 5-25 scale)
+    \item Motivation (4 items, 4-20 scale)
+    \item Self confidence (5 items, 5-25 scale)
+    \item Value (5 items, 5-25 scale)
   \end{itemize}
 \end{itemize}}
 \end{flushleft}
@@ -454,7 +454,7 @@ ggplot(ngl, aes(x=factor(variable), y=value)) +
 
 \begin{itemize}
    \item  Value subconstruct decreases throughout the semester.
-   \item Other subconstructs have no change of very slight increase. 
+   \item Other subconstructs have no change or very slight increase. 
 \end{itemize}}
 \end{flushleft}
 
@@ -563,11 +563,12 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
 {\begin{itemize}
    \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
   \item Bars indicate the mean value of each sobconstruct (i.e Metacognitive Awareness Knowledge and Metacogntive Awareness Regulation) at the beginning and end of the semster.
-  \item Distribution of Metacognitive Awareness..... . 2 subscales are represented %something missing
+  \item 2 subconstructs are presented:  
   \begin{itemize} 
     \item Knowledge (8 items, 8-40 scale) 
     \item Regulation (11 items, 11-55 scale)
-  \begin{itemize}
+    \item Mean Overall MA (19, 19-95 scale)
+  \begin{itemize} 
     \item \textbf {Note}: Acronmyms were used to label the graph. 
     \begin{itemize} 
       \item MA- Metagocnative Awareness
