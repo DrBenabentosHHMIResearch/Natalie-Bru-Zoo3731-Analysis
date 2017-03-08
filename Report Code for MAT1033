@@ -34,6 +34,7 @@ library(reshape2)
 
 setwd("/Users/NatalieBrunelle/Desktop/Work_2016/fallATMI/Rocio_Needed_Files /") #set working director to that file (so that R can open the docs without the path)
 ATMIdf <- read.csv("ATMIdf.csv")
+ls(ATMIdf)
 ClassInfoJH <- read.csv( "/Users/NatalieBrunelle/Desktop/Work_2016/fallATMI/FIU Course Grade Statistics MAT1033 16.06.20.csv")
 
 #ATMI Pre Bargraph 
@@ -112,6 +113,9 @@ l1 <- melt(m1[,c("Term","meanid.pre","meanid.post")], id.vars=c("Term"))
 
 #normalized gain for Identity
 ng1 <- ddply(ATMIdf, "Term", summarise, meanMathId.ng = mean(MathId.ng, na.rm=TRUE))
+
+##Boxplot for NG MI
+box.Identity.ng <- melt(ATMIdf[,c("Term","MathId.ng")], id.vars=c("Term"))
 
 #Metacognition pre and post
 ls(ATMIdf)
@@ -501,7 +505,7 @@ ggplot(l1, aes(x=factor(variable), y=value)) +
   geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
   facet_grid(Term ~.)+ 
   theme(legend.position="none")+ #this removes the legend
-  ylab("Math Identity") + xlab("")+
+  ylab("Math Identity \n for Normalized Gains") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")+
   scale_x_discrete(labels=c("Beginning of Semester","End of Semester"))
   
@@ -515,8 +519,8 @@ ggplot(l1, aes(x=factor(variable), y=value)) +
 
 
 \newpage
-\subsection{Normalized Gains for Math Identity}
-\begin{flushleft}{\Large MAT1033 Normalized Gains for Math Identity}\par
+\subsection{Normalized Gains for Math Identity Bargraph}
+\begin{flushleft}
 \vspace{3mm}
 \large Mean normalized gains for math identity \par
 \large  Fall '15 and Spring '16 \par
@@ -537,6 +541,27 @@ ggplot(ng1, aes(x=factor(Term), y=meanMathId.ng)) +
 \end{itemize}}
 \end{flushleft}
 
+\newpage
+\subsection{Math Identity Normalized Gains Boxplot}
+\begin{flushleft}
+\vspace{3mm}
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+<<plot11.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+
+ggplot(box.Identity.ng, aes(x=variable, y=value, fill=variable))+
+  geom_boxplot() + facet_grid( .~ Term)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("Math Identity \n Normalized Gains") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
+  
+@
+\normalsize
+{\begin{itemize}
+   \item  The semesters are indicated by their 4 digit codes; 1158 and 1161 for Fall '15 and Spring '16, respectively. 
+  \end{itemize}}
+\end{flushleft}
 
 \newpage
 \section{Metacognitive Awareness Data}
@@ -546,7 +571,7 @@ ggplot(ng1, aes(x=factor(Term), y=meanMathId.ng)) +
 \large Beginning and End of semester means of metacognative awareness subconstructs \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-<<plot11.1, echo=FALSE, fig.align='center', warning=F, fig.width=7, fig.height=5, fig.keep='high'>>=
+<<plot12.1, echo=FALSE, fig.align='center', warning=F, fig.width=7, fig.height=5, fig.keep='high'>>=
 
 #Metacognition pre and post
 ggplot(l2, aes(x=factor(variable), y=value)) +
@@ -588,7 +613,7 @@ ggplot(l2, aes(x=factor(variable), y=value)) +
 \large Mean normalized gains for Metacognative Awareness \par
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-<<plot12.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+<<plot13.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 #normalized gain for Metacognition
 ggplot(l3, aes(x=factor(variable), y=value)) +
@@ -624,7 +649,7 @@ ggplot(l3, aes(x=factor(variable), y=value)) +
  \par
  \normalsize \textbf{Of these predictors the students GPA* was the only predictor that was statistically significant in predicting the students final grade.}
  %%%% rough draft
-<<plot13.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+<<plot14.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 summary(Lm1)
 
@@ -640,7 +665,7 @@ summary(Lm1)
 \normalsize....
  \hfill\break
  \normalsize ...... %%% check what this is describing
-<<plot14.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+<<plot15.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 lmOpost<- lm(MP1$Grd.Pt.Unt~MP1$GPA+MP1$OverallATMIpost) 
 summary(lmOpost)
@@ -657,7 +682,7 @@ summary(lmOpost)
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-<<plot15.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+<<plot16.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 LmPre<- lm(MP1$Grd.Pt.Unt~MP1$ATMI.E.pre+MP1$ATMI.M.pre+MP1$ATMI.SC.pre+MP1$ATMI.V.pre)
 summary(LmPre)
@@ -671,7 +696,7 @@ summary(LmPre)
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-<<plot16.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+<<plot17.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 LmPost<- lm(MP1$Grd.Pt.Unt~MP1$ATMI.E.post+MP1$ATMI.M.post+MP1$ATMI.SC.post+MP1$ATMI.V.post)
 summary(LmPost)
@@ -684,7 +709,7 @@ summary(LmPost)
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-<<plot17.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+<<plot18.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 lmOpre<- lm(MP1$Grd.Pt.Unt~MP1$OverallATMIpre)
 summary(lmOpre)
@@ -698,7 +723,7 @@ summary(lmOpre)
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-<<plot18.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+<<plot19.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 lmOverall <- lm(MP1$Grd.Pt.Unt~MP1$OverallATMI.ng)
 summary(lmOverall)
@@ -712,7 +737,7 @@ summary(lmOverall)
 \vspace{3mm}
 \large  Fall '15 and Spring '16 \par
 \vspace{5mm}
-<<plot19.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+<<plot20.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
 
 lmRG <- lm(MP1$Grd.Pt.Unt~MP1$Rawgain)
 summary(lmRG)
@@ -720,6 +745,49 @@ summary(lmRG)
 
 @
 \end{flushleft}
+
+\newpage
+\subsection{Nonsignificant Linear Model}
+\begin{flushleft}
+\vspace{3mm}
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+<<plot21.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+lmGG<- lm(MP1$Grd.Pt.Unt~MP1$GPA+MP1$Sex)
+summary(lmGG)
+
+@
+\end{flushleft}
+
+\newpage
+\subsection{Nonsignificant Linear Model}
+\begin{flushleft}
+\vspace{3mm}
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+<<plot22.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+lmMI <- lm(MP1$Grd.Pt.Unt~MP1$MathId.pre+MP1$MathId.post+MP1$MathId.ng)
+summary(lmMI)
+
+@
+\end{flushleft}
+
+\newpage
+\subsection{Nonsignificant Linear Model}
+\begin{flushleft}
+\vspace{3mm}
+\large  Fall '15 and Spring '16 \par
+\vspace{5mm}
+<<plot23.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+lmMA<-lm(MP1$Grd.Pt.Unt~MP1$Metacog.K.pre+MP1$Metacog.R.pre+MP1$Metacog.K.post+MP1$Metacog.R.post+MP1$MetK.ng+MP1$MetR.ng)
+summary(lmMA)
+
+
+@
+\end{flushleft}
+
 
 \newpage
 \section{Appendix}
@@ -733,19 +801,18 @@ summary(lmRG)
 \begin{flushleft}
 \begin{thebibliography}{9}
 \bibitem{latexcompanion} 
-Michel Goossens, Frank Mittelbach, and Alexander Samarin. 
-\textit{The \LaTeX\ Companion}. 
-Addison-Wesley, Reading, Massachusetts, 1993.
+Theobald Roddy, Freeman Scott, Stone Elisa (2013).
+Is It the Intervention or the Students? Using Linear Regression to Control for Student Characteristics in Undergraduate STEM Education Research. CBE—Life Sciences Education Vol. 13, 41–48, Spring 2014 
+
+\bibitem{Tapia Martha} 
+Tapia Martha, Marsh II George E (2004) 
+ An Instrument to Measure Mathematics Attitudes. Academic Exchange Quarterly Vol 8, issue 2 
  
-\bibitem{einstein} 
-Albert Einstein. 
-\textit{Zur Elektrodynamik bewegter K{\"o}rper}. (German) 
-[\textit{On the electrodynamics of moving bodies}]. 
-Annalen der Physik, 322(10):891–921, 1905.
- 
-\bibitem{knuthwebsite} 
-Knuth: Computers and Typesetting,
-\\\texttt{http://www-cs-faculty.stanford.edu/\~{}uno/abcde.html}
+\bibitem{Lim Siew Ye} 
+Lim Siew Yee, Chapman Elaine (2012). Development of a short form of the attitudes toward mathematics inventory. Deuce Stud Math 82, 145-164
+
+\bibitem{last}
+Schraw Gregory, Dennison Rayne Sperling (1994). Assessing Metacognitive Awareness. Contemporary Educational Psychology 19, 460-475
 \end{thebibliography}
 \vspace{5mm}
 \end{flushleft} 
