@@ -1,3 +1,4 @@
+
 #########################################
 #### MAT1033 Jeremiah Hower ATMI #######
 #########################################
@@ -551,6 +552,9 @@ ATMIdf$Metacog.R.post <-rowSums(ATMIdf[,c('Q40.y.r','Q41.y.r','Q42.y.r','Q43.y.r
 table(ATMIdf$Metacog.R.post)
 ls(ATMIdf)
 
+ATMIdf$Metacog.pre <- ATMIdf$Metacog.K.pre + ATMIdf$Metacog.R.pre
+ATMIdf$Metacog.post <- ATMIdf$Metacog.K.post + ATMIdf$Metacog.R.post
+
 ## Overall ATMI Pre
 ATMIdf$OverallATMIpre <- with(ATMIdf, (ATMI.V.pre+ATMI.M.pre+ATMI.E.pre+ATMI.SC.pre))
 
@@ -571,9 +575,16 @@ ATMIdf[,c("OverallATMIpost","ATMI.V.post", "ATMI.M.post","ATMI.E.post","ATMI.SC.
 
 ATMIdf$MathId.ng <- ifelse(ATMIdf$MathId.pre<60, ((ATMIdf$MathId.post - ATMIdf$MathId.pre)/(60-ATMIdf$MathId.pre))*100, NA) 
 
-ATMIdf$MetK.ng <- ifelse(ATMIdf$Metacog.K.pre<40, ((ATMIdf$Metacog.K.post - ATMIdf$Metacog.K.pre)/(40-ATMIdf$Metacog.K.pre))*100, NA) 
-ATMIdf$MetR.ng <- ifelse(ATMIdf$Metacog.R.pre<55, ((ATMIdf$Metacog.R.post - ATMIdf$Metacog.R.pre)/(55-ATMIdf$Metacog.R.pre))*100, NA) 
+ATMIdf$MetK.ng <- ifelse(ATMIdf$Metacog.K.pre<40, (((ATMIdf$Metacog.K.post-8) - (ATMIdf$Metacog.K.pre-8)))/(32-(ATMIdf$Metacog.K.pre-8))*100, NA)
+ATMIdf$MetR.ng <- ifelse(ATMIdf$Metacog.R.pre<55, (((ATMIdf$Metacog.R.post-11) - (ATMIdf$Metacog.R.pre-11)))/(44-(ATMIdf$Metacog.R.pre-11))*100, NA) 
 
+describeBy(ATMIdf$Met.ng)
+
+ATMIdf$Met.ng <- ifelse(ATMIdf$Metacog.pre<95, (((ATMIdf$Metacog.post-19) - (ATMIdf$Metacog.pre-19)))/(76-(ATMIdf$Metacog.pre-19))*100, NA)
+
+str(ATMIdf)
+ATMIdf[,c(111:112,118:119,123:124,138:140)]
+which( colnames(ATMIdf)=="Metacog.R.post")
 #above is the old normalized gains in case of some error 
 
 ATMIdf$ATMI.E.ng <-ifelse((ATMIdf$ATMI.E.post_r>ATMIdf$ATMI.E.pre_r),(((ATMIdf$ATMI.E.post_r - ATMIdf$ATMI.E.pre_r)/(100-ATMIdf$ATMI.E.pre_r))*100),
@@ -756,6 +767,13 @@ ggplot(l, aes(x=factor(variable), y=value)) +
   ylab("ATMI Mean Score") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")
 
+######################################################################
+
+
+
+
+######################################################################
+
 #normalized gain for Identity
 ng1 <- ddply(ATMIdf, "Term", summarise, meanMathId.ng = mean(MathId.ng, na.rm=TRUE))
 
@@ -764,6 +782,18 @@ ggplot(ng1, aes(x=factor(Term), y=meanMathId.ng)) +
   theme(legend.position="none")+ #this removes the legend
   ylab("ATMI Mean Score") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")
+######################################################################
+#####BOxplot for this^^^ ##### 
+
+box.Identity.ng <- melt(ATMIdf[,c("Term","MathId.ng")], id.vars=c("Term"))
+
+ggplot(box.Identity.ng, aes(x=variable, y=value, fill=variable))+
+  geom_boxplot() + facet_grid( .~ Term)+
+  theme(legend.position="none")+ #this removes the legend
+  ylab("Math Identity \n Normalized Gains") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")
+
+######################################################################
 
 ##=====================
 ## METACOGNITION
@@ -771,12 +801,14 @@ ggplot(ng1, aes(x=factor(Term), y=meanMathId.ng)) +
 
 #Metacognition pre and post
 ls(ATMIdf)
-m <- ddply(ATMIdf, "Term", summarise, meanmetk.pre = mean(Metacog.K.pre, na.rm=TRUE),
-           meanmetk.post = mean(Metacog.K.post, na.rm=TRUE),
-           meanmetr.pre = mean(Metacog.R.pre, na.rm=TRUE),
-           meanmetr.post = mean(Metacog.R.post, na.rm=TRUE))
+m <- ddply(ATMIdf, "Term", summarise, meanmetk.pre = (mean(Metacog.K.pre, na.rm=TRUE)/40*100),
+           meanmetk.post = (mean(Metacog.K.post, na.rm=TRUE)/40*100),
+           meanmetr.pre = (mean(Metacog.R.pre, na.rm=TRUE)/55*100),
+           meanmetr.post = (mean(Metacog.R.post, na.rm=TRUE)/55*100),
+           meanmet.pre = (mean(Metacog.pre, na.rm=TRUE)/95*100),
+           meanmet.post =(mean(Metacog.post, na.rm=TRUE)/95*100))
 
-l <- melt(m[,c("Term","meanmetk.pre","meanmetk.post","meanmetr.pre","meanmetr.post")], id.vars=c("Term"))
+l <- melt(m[,c("Term","meanmetk.pre","meanmetk.post","meanmetr.pre","meanmetr.post","meanmet.pre","meanmet.post")], id.vars=c("Term"))
 
 ggplot(l, aes(x=factor(variable), y=value)) +
   geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
@@ -788,15 +820,18 @@ ggplot(l, aes(x=factor(variable), y=value)) +
 #normalized gain for Metacognition
 table(ATMIdf$MetK.ng)
 ng2 <- ddply(ATMIdf, "Term", summarise, meanMetK.ng = mean(MetK.ng, na.rm=TRUE),
-            meanMetK.ng = mean(MetK.ng, na.rm=TRUE))
+            meanMetR.ng = mean(MetR.ng, na.rm=TRUE),
+            meanmet.ng = mean(Met.ng,na.rm=TRUE))
 
-ggplot(ng2, aes(x=factor(Term), y=meanMetK.ng)) +
-  geom_bar(stat="identity",aes(fill=factor(Term)))+
+l2 <- melt(ng2[,c("Term","meanMetK.ng","meanMetR.ng","meanmet.ng")], id.vars=c("Term"))
+
+ggplot(l2, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)+
   theme(legend.position="none")+ #this removes the legend
   ylab("ATMI Mean Score") + xlab("")+
   scale_fill_brewer(direction=-1, palette="Paired")
 
-####Create overall for Meta
 
 ####################################################################################
 
@@ -840,4 +875,18 @@ MP1$Rawgain<- MP1$OverallATMIpost-MP1$OverallATMIpre
 lmRG <- lm(MP1$Grd.Pt.Unt~MP1$Rawgain)
 summary(lmRG)
 
+#################################################
+## Lmfir for GPA and Gender ## 
+lmGG<- lm(MP1$Grd.Pt.Unt~MP1$GPA+MP1$Sex)
+summary(lmGG)
+
+#################################################
+### Lmfits for Identity 
+lmMI <- lm(MP1$Grd.Pt.Unt~MP1$MathId.pre+MP1$MathId.post+MP1$MathId.ng)
+summary(lmMI)
+
+#### Lmfit for MA
+lmMA<-lm(MP1$Grd.Pt.Unt~MP1$Metacog.K.pre+MP1$Metacog.R.pre+MP1$Metacog.K.post+MP1$Metacog.R.post+MP1$MetK.ng+MP1$MetR.ng)
+summary(lmMA)
+#################################################
 write.csv(ATMIdf, "ATMIdf.csv")
