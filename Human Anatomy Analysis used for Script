@@ -1,0 +1,264 @@
+#################################
+####Human Anatomy Analysis ######
+#################################
+
+#################################
+###### *Running Libraries* ########
+#################################
+library(car)
+library(psych)
+library(ggplot2)
+library(gridExtra)
+library(plyr)
+library(base) #iceless
+library(scales)
+library(knitr)
+
+###################################
+###### *Cleaning Up The Data* #####
+###################################
+
+##REMINDER##
+## To open a csv file: to get the file path, right click on the file and get info ##
+## use the read.csv command, file . choose () , with the file path on quotations. File name with extension is needed ##
+file.choose()
+
+LecData <-read.csv("/Users/NatalieBrunelle/Desktop/Work_2016/ZOO_3731/Use_These_For_ZOODATA/Zoo3731 Lecture CSV.csv")
+####From Orginal Cleaned Data Panthersoft#####
+LabData<-read.csv("/Users/NatalieBrunelle/Desktop/Work_2016/ZOO_3731/Use_These_For_ZOODATA/ZOO3731 Lab Data from Panthersoft.csv")
+#### Lab Data From Panthersoft####
+ls(LabData)
+LabData<-unique(LabData[c("ID", "Term","Grade","Grd.Pt.Unt")])
+####Cleaned Duplicates###
+Supinfo<-read.csv("/Users/NatalieBrunelle/Desktop/Work_2016/ZOO_3731/Use_These_For_ZOODATA/ZOO3731 Course Type & LAs .csv") 
+#### supplementary information like Course type and LA info Myself/LB####
+LecExams<-read.csv("/Users/NatalieBrunelle/Desktop/Work_2016/ZOO_3731/Use_These_For_ZOODATA/ZOO3731 Clean Lecture Exam CSV.csv")
+#### Lecture Exam Grades From LB### 
+LabExams<-read.csv("/Users/NatalieBrunelle/Desktop/Work_2016/ZOO_3731/Use_These_For_ZOODATA/CSV ZOO3731 Clean Lab Exams .csv")
+####Lab Exam Grades From LB####
+
+#############################
+#### Combing Dataframes #####
+#############################
+
+Merge1<- merge(LecData,LabData,by.x=c("PID","TERM"), by.y=c("ID","Term"),all.x= TRUE)
+##### Merge1 <- Merged Data from Lab and Lecture, Lab 4928 obvs, Lec 5590 obvs , Merge1 5590 obvs######
+####NOTE: Only looking at correlation between those who took Lab AND lecture, Students who repeated lab w/o lecture in same term are not included)
+names(Supinfo)[names(Supinfo) =='Section.Professor.Term'] <- 'Section.Instructor.Term'
+Merge2 <- merge(Merge1,Supinfo,by=c("Section.Instructor.Term"),all.x=TRUE)
+######Merge2<-All of the data from Lab and Lecture now with Course Type and La information######
+Merge3<- merge(Merge2,LecExams,by=c("PID","TERM"),all.x=TRUE)
+#######Merge3<- All of the Lab and Lecture data now with Lecture Exam Grades###########
+ZOOdf<-merge(Merge3,LabExams,by=c("PID","TERM"),all.x=TRUE)
+###### ZOODATA<-includes all necessary for Analysis for ALL profs and sections######
+
+##########################################
+##### Cleaning up Unwanted Variables######
+##########################################
+
+## Cleaning ZOOdf ## 
+ls(ZOOdf)
+ZOOdf$X<-NULL 
+ZOOdf$X.1<- NULL 
+ZOOdf$X.2<- NULL 
+ZOOdf$X.3<- NULL 
+ZOOdf$X.4<- NULL 
+ZOOdf$X.5<- NULL 
+ZOOdf$X.6<- NULL 
+###This was added baggage for some reason? there was no values in any of them###
+ls(ZOOdf)
+names(ZOOdf)[names(ZOOdf) =='Lab.Grade.y'] <- 'Lab.Grade'
+names(ZOOdf)[names(ZOOdf) =='Lab.Grade.x'] <- 'Course.Grade'
+ls(ZOOdf)
+names(ZOOdf)[names(ZOOdf) =='Last'] <- 'Last.Name'
+names(ZOOdf)[names(ZOOdf) =='Name'] <-'Instructor.Name'
+ZOOdf$LAST.x<- NULL 
+ZOOdf$FIRST.x<- NULL 
+ZOOdf$LAST.y<- NULL 
+ZOOdf$FIRST.y<- NULL 
+ls(ZOOdf)
+names(ZOOdf)[names(ZOOdf) =='Lab.Exam.1.x'] <- 'Lecture.Exam.1'
+names(ZOOdf)[names(ZOOdf) =='Lab.Exam.2.x'] <- 'Lecture.Exam.2'
+names(ZOOdf)[names(ZOOdf) =='Lab.Exam.3.x'] <- 'Lecture.Exam.3'
+names(ZOOdf)[names(ZOOdf) =='Lab.Exam.4'] <- 'Lecture.Exam.4'
+names(ZOOdf)[names(ZOOdf) =='Lab.Final'] <- 'Lecture.Final.Exam'
+names(ZOOdf)[names(ZOOdf) =='Lab.Exam.1.y'] <- 'Lab.Exam.1'
+names(ZOOdf)[names(ZOOdf) =='Lab.Exam.2.y'] <- 'Lab.Exam.2'
+names(ZOOdf)[names(ZOOdf) =='Lab.Exam.3.y'] <- 'Lab.Exam.3'
+names(ZOOdf)[names(ZOOdf) =='Grd.Pt.Unt.y'] <- 'Grd.Pt.Unt.Lab'
+names(ZOOdf)[names(ZOOdf) =='Grade'] <- 'Lab Letter Grade'
+names(ZOOdf)[names(ZOOdf) =='Grd.Pt.Unt.x'] <- 'Grd.Pt.Unt.Lecture'
+ls(ZOOdf)
+ZOOdf$Acad.Plan.1<-NULL 
+ZOOdf$Acad.Prog.1<-NULL
+
+################################################
+########Final DF for ALL HUMAN ANATOMY INFO#####
+#################################################
+ZOOdf
+
+################################################
+###### Making Dataframe for only Lisa's Data####
+################################################
+#ZOOAnalysis <-Meaning Data that will be analyzed####
+
+####New Subset command where you can pick your own variables###### 
+attach(ZOOdf)
+ZOOAnalysis<- ZOOdf[ which(Instructor.Name=='Lisa Brinn-Courtney Elazear'|Instructor.Name=='Lisa Brinn'),]
+detach(ZOOdf)
+
+####Removing Data frames##### 
+rm(ZOOAnalysis0)
+
+#####Saving CSVs######
+write.csv(ZOOdf,"/Users/NatalieBrunelle/Desktop/Work_2016/ZOO_3731/Use_These_For_ZOODATA/ZOO3731 Complete Data Frame")
+write.csv(ZOOAnalysis,"/Users/NatalieBrunelle/Desktop/Work_2016/ZOO_3731/Use_These_For_ZOODATA/ZOO3731_df_for_Lisa's_Data")
+
+####################################
+##### *ALL COURSE DATA ANALYSIS* ###
+####################################
+
+#####################################################################
+### Box Plot of Reformed vs Traditional for GPU Lecture ALL #####
+#####################################################################
+means <- aggregate(Grd.Pt.Unt.Lecture ~ Course.Type, ZOOdf, mean)
+means$Grd.Pt.Unt.Lecture <- round(means$Grd.Pt.Unt.Lecture, digits=1)
+means
+
+BoxplotRvTALLec<-
+  ggplot(data=ZOOdf,aes(x=Course.Type,y=Grd.Pt.Unt.Lecture,fill=Course.Type))+geom_boxplot()+
+  stat_summary(fun.y =mean,colour="blue",geom="point",shape=18, size=3, show.legend=FALSE)+
+  geom_text(data = means,aes(label=Grd.Pt.Unt.Lecture,y=Grd.Pt.Unt.Lecture+0.1)) +
+  theme(legend.title = element_text(colour="black", size=10,face="bold"))+theme(legend.position='none')+
+  labs(title= "GPU Distribution in Lecture \n ZOO3731  \n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") +theme(axis.text.x= element_text(colour= "Black", angle = 40, size = 10, vjust = 0.6), axis.text.y=element_text(colour = "Black", size = 10), title=element_text(colour = "Black", size = 15))
+print(BoxplotRvTALLec)
+describeBy(ZOOdf$Grd.Pt.Unt,ZOOdf$Course.Type)
+
+### BoxplotRvTALLec means Boxplot for Reformed and Traditional Grade Destributions from Spring 07-16 LECTURE###
+
+#############################################
+##### Histogram Check for Distribution #######
+###############################################
+
+ggplot(data=ZOOdf,aes(x=Grd.Pt.Unt.Lecture,fill=Course.Type))+geom_bar(position ="dodge" )
+
+HistogramRvTALLec<-ggplot(data=ZOOdf,aes(x=Grd.Pt.Unt.Lecture,fill=Course.Type))+geom_bar()+
+  stat_summary(fun.y =mean,colour="blue",geom="point",shape=18, size=3, show.legend=FALSE)+
+  geom_text(data = means,aes(label=Grd.Pt.Unt.Lecture,y=Grd.Pt.Unt.Lecture+0.1))+ labs(title= "Distribution of GPU in ZOO3731 in Lecture  \n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") +
+  theme(axis.text.x= element_text(colour= "darkblue", angle = 40, size = 12, vjust = 0.6), axis.text.y=element_text(colour = "darkblue", size = 12), title=element_text(colour = "Navy blue", size = 20))
+print(HistogramRvTALLec)
+
+
+##############################################################
+###### T-Test for Reformed v Traditional ALL Lecture#########
+#############################################################
+ttestRvTALLec <-t.test(ZOOdf$Grd.Pt.Unt.Lecture~ZOOdf$Course.Type)
+print(ttestRvTALL)
+
+###################################################
+####### GPU Averages of TvR ALL Lecture ###########
+###################################################
+describeBy(ZOOdf$Grd.Pt.Unt.Lecture, ZOOdf$Course.Type)
+m <- ddply(ZOOdf, c("Course.Type"), summarise, mean=mean(Grd.Pt.Unt.Lecture),
+           sd=sd(Grd.Pt.Unt.Lecture), se=sd(Grd.Pt.Unt.Lecture)/sqrt(length(Grd.Pt.Unt.Lecture))) 
+
+
+p <- ggplot(data=m, aes(x=Course.Type, y=mean)) + 
+  geom_bar(stat="identity", position=position_dodge(), fill="Dark Slate Gray 3", width=0.55)
+p <- p + geom_errorbar(position=dodge, width=0.25, aes(ymin=mean-se, ymax=mean+se))
+p <- p + labs(title= " ZOO3731 GPU Averages \n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") 
+p <- p + theme(axis.text.x= element_text(colour= "Cyan 4", angle = 40, size = 12, vjust = 0.6), axis.text.y=element_text(colour = "Dark Slate Gray 4", size = 10), title=element_text(colour = "Dark Slate Gray 4", size = 15))
+p <- p + guides(fill=guide_legend(reverse=T))
+p <- p + scale_x_discrete(labels=c("Reformed", "Traditional"))
+p
+
+print(p)
+ 
+###############################################
+###### Box Plot for LAB GPU RvT ALL ###########
+###############################################
+means <- aggregate(Grd.Pt.Unt.Lab ~ Course.Type, ZOOdf, mean)
+means$Grd.Pt.Unt.Lab <- round(means$Grd.Pt.Unt.Lab, digits=1)
+means
+
+BoxplotRvTALLab<-
+  ggplot(data=ZOOdf,aes(x=Course.Type,y=Grd.Pt.Unt.Lab,fill=Course.Type))+geom_boxplot()+
+  stat_summary(fun.y =mean,colour="black",geom="point",shape=18, size=3, show.legend=FALSE)+
+  theme(legend.position='none')+
+  geom_text(data = means,aes(label=Grd.Pt.Unt.Lab,y=Grd.Pt.Unt.Lab+0.1))+ 
+  labs(title= "Course Type Comparison \n of Lab GPUs in ZOO3731 \n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") +
+  theme(axis.text.x= element_text(colour= "black", angle = 40, size = 10, vjust = 0.6), axis.text.y=element_text(colour = "black", size = 10), title=element_text(colour = "black", size = 15))
+
+print(BoxplotRvTALLab)
+
+
+describeBy(ZOOdf$Grd.Pt.Unt.Lab,ZOOdf$Course.Type)
+describeBy(ZOOAnalysis$Grd.Pt.Unt.Lab,ZOOAnalysis$Course.Type)
+
+##############################################################
+###### T-Test for Reformed v Traditional ALL Lab    #########
+#############################################################
+ttestRvTALLab <-t.test(ZOOdf$Grd.Pt.Unt.Lab~ZOOdf$Course.Type)
+print(ttestRvTALLab)
+
+ls(ZOOdf)
+
+
+##################################
+##### LM FIT MODEL ALL DATA #####
+#################################
+lmALL<-lm(ZOOdf$Grd.Pt.Unt.Lecture~ZOOdf$Max.Score..SAT.SCORE.+ZOOdf$Course.Type+ZOOdf$Grd.Pt.Unt.Lab+
+            ZOOdf$Sex+ZOOdf$LA.Vol)
+summary(lmALL)
+str(ZOOdf)
+ls(ZOOdf)
+
+###LmALL standing for all data being available#####
+###########################################################################################################
+
+#########################################
+##### *LISA BRINN ONLY DATA ANALYSIS* ###
+#########################################
+
+#####################################################################
+### Box Plot of Reformed vs Traditional for GPU Lecture LISA #####
+#####################################################################
+means <- aggregate(Grd.Pt.Unt.Lecture ~ Course.Type, ZOOAnalysis, mean)
+means$Grd.Pt.Unt.Lecture <- round(means$Grd.Pt.Unt.Lecture, digits=1)
+means
+
+BoxplotRvTLisaLec<-
+  ggplot(data=ZOOAnalysis,aes(x=Course.Type,y=Grd.Pt.Unt.Lecture,fill=Course.Type))+geom_boxplot()+
+  stat_summary(fun.y =mean,colour="black",geom="point",shape=18, size=3, show.legend=FALSE)+
+  theme(legend.position='none')+
+  geom_text(data = means,aes(label=Grd.Pt.Unt.Lecture,y=Grd.Pt.Unt.Lecture+0.1))+ labs(title= "Distribution of GPUs in Lecture \n Lisa Brinn & Courtney Elazear \n (Fall'14-'16)", x="Course Type", y="Grade Point Unit") +
+  theme(axis.text.x= element_text(colour= "black", angle = 40, size = 10, vjust = 0.6), axis.text.y=element_text(colour = "black", size = 10), title=element_text(colour = "black", size = 15))
+print(BoxplotRvTLisaLec)
+
+###############################################
+###### Box Plot for LAB GPU RvT LISA ###########
+###############################################
+means <- aggregate(Grd.Pt.Unt.Lab ~ Course.Type, ZOOAnalysis, mean)
+means$Grd.Pt.Unt.Lab <- round(means$Grd.Pt.Unt.Lab, digits=1)
+means
+
+BoxplotRvTLisaLab<-ggplot(data=ZOOAnalysis,aes(x=Course.Type,y=Grd.Pt.Unt.Lab,fill=Course.Type))+geom_boxplot()+
+  stat_summary(fun.y =mean,colour="black",geom="point",shape=18, size=3, show.legend=FALSE)+
+  theme(legend.position='none')+
+  geom_text(data = means,aes(label=Grd.Pt.Unt.Lab,y=Grd.Pt.Unt.Lab+0.1))+ labs(title= " Course Type GPUs Reflection in Lab \n ZOO3731\n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") +
+  theme(axis.text.x= element_text(colour= "black", angle = 40, size = 10, vjust = 0.6), axis.text.y=element_text(colour = "black", size = 10), title=element_text(colour = "black", size = 15))
+print(BoxplotRvTLisaLab)
+
+
+##################################
+##### LM FIT MODEL LISA DATA #####
+#################################
+
+lmLisa<-lm(ZOOAnalysis$Grd.Pt.Unt.Lecture~ZOOAnalysis$Max.Score..SAT.SCORE.+ZOOAnalysis$Course.Type+ZOOAnalysis$Grd.Pt.Unt.Lab+
+            ZOOAnalysis$Sex+ZOOAnalysis$LA.Vol)
+summary(lmLisa)
+
+#####Check how to make U's NA########
+######Check SAT differences##########
+
+#################################################################################################
