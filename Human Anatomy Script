@@ -1,0 +1,331 @@
+
+\documentclass[12pt]{article}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{relsize,setspace}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{xcolor}% http://ctan.org/pkg/xcolor
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{ Lisa Brin ZOO 3731 }
+\lhead{Summary Report Draft}
+\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt} %thickness of the header line
+\renewcommand{\headrule}{\hbox to\headwidth{%
+    \color{gray}\leaders\hrule height \headrulewidth\hfill}}
+\headheight 30pt \headsep 20pt
+\footskip 10.5pt 
+
+\begin{document}
+
+<<InitialProcedures, echo=FALSE, include=FALSE >>=
+
+library(gdata)
+library("rio")
+library(plyr)
+library(car)
+library(ggplot2)
+library(psych)
+library(reshape2)
+library(wesanderson)
+
+ZOOdf <- read.csv("/Users/NatalieBrunelle/Desktop/Work_2016/ZOO_3731/Use_These_For_ZOODATA/ZOO3731 Complete Data Frame")
+ZOOAnalysis <- read.csv( "/Users/NatalieBrunelle/Desktop/Work_2016/ZOO_3731/Use_These_For_ZOODATA/ZOO3731_df_for_Lisa's_Data")
+
+# Box Plot of Reformed vs Traditional for GPU Lecture ALL #
+means <- aggregate(Grd.Pt.Unt.Lecture ~ Course.Type, ZOOdf, mean)
+means$Grd.Pt.Unt.Lecture <- round(means$Grd.Pt.Unt.Lecture, digits=1)
+means
+
+
+##### Histogram Check for Distribution #######
+#ggplot(data=ZOOdf,aes(x=Grd.Pt.Unt.Lecture,fill=Course.Type))+geom_bar(position ="dodge" )
+
+###### T-Test for Reformed v Traditional ALL Lecture#########
+# no necessary Extra for this one# 
+
+####### GPU Averages of TvR ALL Lecture ###########
+m <- ddply(ZOOdf, c("Course.Type"), summarise, mean=mean(Grd.Pt.Unt.Lecture),
+           sd=sd(Grd.Pt.Unt.Lecture), se=sd(Grd.Pt.Unt.Lecture)/sqrt(length(Grd.Pt.Unt.Lecture))) 
+p <- ggplot(data=m, aes(x=Course.Type, y=mean)) + 
+  geom_bar(stat="identity", position=position_dodge(), fill="Cultivar", width=0.55)
+p <- p + geom_errorbar(position="dodge", width=0.25, aes(ymin=mean-se, ymax=mean+se))
+p <- p + labs(title= " ZOO3731 GPU Averages", x="Course Type", y="Grade Point Unit") 
+p <- p + theme(legend.position="none")
+p <- p + scale_fill_manual(values=wes_palette(n=2, name="GrandBudapest2"))
+p <- p + guides(fill=guide_legend(reverse=T))
+p <- p + scale_x_discrete(labels=c("Reformed", "Traditional"))
+
+print(p)
+
+ggplot(ngl, aes(x=factor(variable), y=value)) +
+  geom_bar(position="dodge", stat="identity",aes(fill=factor(variable)))+
+  facet_grid(Term ~.)+  theme(legend.position="none")+ #this removes the legend
+  ylab("ATMI Normalized Gains") + xlab("")+
+  scale_fill_brewer(direction=-1, palette="Paired")+
+  scale_x_discrete(labels=c("Enjoyment","Motivation","Self-Confidence","Value"))
+
+###############################################
+###### Box Plot for LAB GPU RvT ALL ###########
+###############################################
+means1 <- aggregate(Grd.Pt.Unt.Lab ~ Course.Type, ZOOdf, mean)
+means1$Grd.Pt.Unt.Lab <- round(means1$Grd.Pt.Unt.Lab, digits=1)
+means1
+
+##############################################################
+###### T-Test for Reformed v Traditional ALL Lab    #########
+#############################################################
+ttestRvTALLab <-t.test(ZOOdf$Grd.Pt.Unt.Lab~ZOOdf$Course.Type)
+print(ttestRvTALLab)
+
+##################################
+##### LM FIT MODEL ALL DATA #####
+#################################
+
+lmALL<-lm(ZOOdf$Grd.Pt.Unt.Lecture~ZOOdf$Max.Score..SAT.SCORE.+ZOOdf$Course.Type+ZOOdf$Grd.Pt.Unt.Lab+ZOOdf$Sex+ZOOdf$LA.Vol)
+
+############################################################################
+
+#########################################
+##### *LISA BRINN ONLY DATA ANALYSIS* ###
+#########################################
+
+#####################################################################
+### Box Plot of Reformed vs Traditional for GPU Lecture #####
+#####################################################################
+means2 <- aggregate(Grd.Pt.Unt.Lecture ~ Course.Type, ZOOAnalysis, mean)
+means2$Grd.Pt.Unt.Lecture <- round(means2$Grd.Pt.Unt.Lecture, digits=1)
+means2
+
+###############################################
+###### Box Plot for LAB GPU RvT LISA ###########
+###############################################
+means3 <- aggregate(Grd.Pt.Unt.Lab ~ Course.Type, ZOOAnalysis, mean)
+means3$Grd.Pt.Unt.Lab <- round(means3$Grd.Pt.Unt.Lab, digits=1)
+means3
+
+##################################
+##### LM FIT MODEL LISA DATA #####
+#################################
+
+lmLisa<-lm(ZOOAnalysis$Grd.Pt.Unt.Lecture~ZOOAnalysis$Max.Score..SAT.SCORE.+ZOOAnalysis$Course.Type+ZOOAnalysis$Grd.Pt.Unt.Lab+
+            ZOOAnalysis$Sex+ZOOAnalysis$LA.Vol)
+
+
+@
+
+\begin{titlepage}\centering
+\topskip0pt
+\vspace*{\fill}
+\Huge Human Anatomy Analasis \par
+\Huge ZOO 3731 \par
+\Huge Lisa Brinn \par
+\Huge  Spring '07-'16 \par
+\vspace*{\fill}
+\end{titlepage}
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Introduction}
+\begin{flushleft}
+ \hfill\break
+\large This needs to be filled in with whatever you will describe for human anatomy  %%%% Very rough draft...very rough
+\vspace{5mm}
+\end{flushleft} 
+
+\newpage
+\section{Collective Data} %% All Courses Not just lisas %%
+\subsection{Boxplot Reformed vs Traditional}
+\begin{flushleft}
+ \hfill\break
+\large  All Sections Spring '07-'16 \par
+\vspace{5mm}
+\normalsize Write something concerning ZOO3731  %%%% Very rough
+
+
+<<plot1.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+#BoxplotRvTALLec
+### BoxplotRvTALLec means Boxplot for Reformed and Traditional Grade Destributions from Spring 07-16 LECTURE###
+
+ggplot(ZOOdf, aes(x=Course.Type,y=Grd.Pt.Unt.Lecture,fill=Course.Type))+geom_boxplot()+
+  stat_summary(fun.y =mean,colour="blue",geom="point",shape=18, size=3, show.legend=FALSE)+
+  geom_text(data = means,aes(label=Grd.Pt.Unt.Lecture,y=Grd.Pt.Unt.Lecture+0.1)) +theme(legend.position="none")+scale_fill_manual(values=wes_palette(n=2, name="GrandBudapest2"))+labs(title= "GPU Distribution in Lecture", x="Course Type", y="Grade Point Unit") 
+@
+\end{flushleft}
+
+\newpage
+\subsection{Histogram Reformed vs. Traditional}
+\begin{flushleft}
+ \hfill\break
+\large  All Sections Spring '07 and '16 \par
+\vspace{5mm}
+\normalsize Write in with relevant topics %%%% very rough
+ 
+<<plot2.1, echo=FALSE, fig.align='center', warning=F, fig.width=7, fig.height=5, fig.keep='high'>>=
+#HistogramRvTALLec
+ggplot(data=ZOOdf,aes(x=Grd.Pt.Unt.Lecture,fill=Course.Type))+geom_bar()+
+  stat_summary(fun.y =mean,colour="blue",geom="point",shape=18, size=3, show.legend=FALSE)+
+  geom_text(data = means,aes(label=Grd.Pt.Unt.Lecture,y=Grd.Pt.Unt.Lecture+0.1))+ theme(legend.position="none") +scale_fill_manual(values=wes_palette(n=2, name="GrandBudapest2"))+labs(title= "Distribution of GPU in Lecture", x="Course Type", y="Grade Point Unit")
+
+@
+\end{flushleft}
+
+\newpage
+\subsection{T-Test for Reformed v Traditional}
+\begin{flushleft}
+\hfill\break
+\large  All Sections Spring '07 and '16 \par
+\vspace{5mm}
+\normalsize Write in with relevant topics %%%% very rough
+ 
+<<plot3.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+###### T-Test for Reformed v Traditional ALL Lecture#########
+#ttestRvTALLec <-
+t.test(ZOOdf$Grd.Pt.Unt.Lecture~ZOOdf$Course.Type)
+
+@
+\end{flushleft}
+
+\newpage
+\subsection{GPU Averages of TvR ALL Lecture}
+\begin{flushleft}
+\hfill\break
+\large  All Sections Spring '07 and '16 \par
+\vspace{5mm}
+\normalsize Write in with relevant topics %%%% very rough
+ 
+<<plot4.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+####### GPU Averages of TvR ALL Lecture ########### 
+print(p)
+
+@
+\end{flushleft}
+
+\newpage
+\subsection{Box Plot for LAB GPU RvT ALL}
+\begin{flushleft}
+\hfill\break
+\large  All Sections Spring '07 and '16 \par
+\vspace{5mm}
+\normalsize Write in with relevant topics %%%% very rough
+ 
+<<plot5.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+ ###### Box Plot for LAB GPU RvT ALL ###########
+
+ggplot(data=ZOOdf,aes(x=Course.Type,y=Grd.Pt.Unt.Lab,fill=Course.Type))+geom_boxplot()+
+  stat_summary(fun.y =mean,colour="black",geom="point",shape=18, size=3, show.legend=FALSE)+
+  theme(legend.position='none')+
+  geom_text(data = means1,aes(label=Grd.Pt.Unt.Lab,y=Grd.Pt.Unt.Lab+0.1))+ 
+  labs(title= "Course Type Comparison \n of Lab GPUs in ZOO3731 \n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") +
+  theme(axis.text.x= element_text(colour= "black", angle = 40, size = 10, vjust = 0.6), axis.text.y=element_text(colour = "black", size = 10), title=element_text(colour = "black", size = 15))
+
+@
+\end{flushleft}
+
+\newpage
+\subsection{T-Test for Reformed v Traditional ALL Lab}
+\begin{flushleft}
+\hfill\break
+\large  All Sections Spring '07 and '16 \par
+\vspace{5mm}
+\normalsize Write in with relevant topics %%%% very rough
+ 
+<<plot6.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+ 
+t.test(ZOOdf$Grd.Pt.Unt.Lab~ZOOdf$Course.Type)
+
+@
+\end{flushleft}
+
+\newpage
+\subsection {LM FIT MODEL ALL DATA}
+\begin{flushleft}
+\hfill\break
+\large  All Sections Spring '07 and '16 \par
+\vspace{5mm}
+\normalsize Write in with relevant topics %%%% very rough
+ 
+<<plot7.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+ summary(lmALL)
+@
+\end{flushleft}
+
+\newpage
+\section{ Lisa Brinn Data }
+\subsection {Box Plot of Reformed vs Traditional for GPU Lecture}
+\begin{flushleft}
+\hfill\break
+\large  All Sections Spring '07 and '16 \par
+\vspace{5mm}
+\normalsize Write in with relevant topics %%%% very rough
+ 
+<<plot8.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+
+### Box Plot of Reformed vs Traditional for GPU Lecture #####
+
+ ggplot(data=ZOOAnalysis,aes(x=Course.Type,y=Grd.Pt.Unt.Lecture,fill=Course.Type))+geom_boxplot()+
+  stat_summary(fun.y =mean,colour="black",geom="point",shape=18, size=3, show.legend=FALSE)+
+  theme(legend.position='none')+
+  geom_text(data = means2,aes(label=Grd.Pt.Unt.Lecture,y=Grd.Pt.Unt.Lecture+0.1))+ labs(title= "Distribution of GPUs in Lecture \n Lisa Brinn & Courtney Elazear \n (Fall'14-'16)", x="Course Type", y="Grade Point Unit") +
+  theme(axis.text.x= element_text(colour= "black", angle = 40, size = 10, vjust = 0.6), axis.text.y=element_text(colour = "black", size = 10), title=element_text(colour = "black", size = 15))
+@
+\end{flushleft}
+
+\newpage
+\subsection {Box Plot for LAB GPU RvT LISA}
+\begin{flushleft}
+\hfill\break
+\large  All Sections Spring '07 and '16 \par
+\vspace{5mm}
+\normalsize Write in with relevant topics %%%% very rough
+ 
+<<plot9.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+ggplot(data=ZOOAnalysis,aes(x=Course.Type,y=Grd.Pt.Unt.Lab,fill=Course.Type))+geom_boxplot()+
+  stat_summary(fun.y =mean,colour="black",geom="point",shape=18, size=3, show.legend=FALSE)+
+  theme(legend.position='none')+
+  geom_text(data = means3,aes(label=Grd.Pt.Unt.Lab,y=Grd.Pt.Unt.Lab+0.1))+ labs(title= " Course Type GPUs Reflection in Lab \n ZOO3731\n (Spring '07-'16)", x="Course Type", y="Grade Point Unit") +
+  theme(axis.text.x= element_text(colour= "black", angle = 40, size = 10, vjust = 0.6), axis.text.y=element_text(colour = "black", size = 10), title=element_text(colour = "black", size = 15))
+@
+\end{flushleft}
+
+\newpage
+\subsection {LM FIT MODEL LISA DATA}
+\begin{flushleft}
+\hfill\break
+\large  All Sections Spring '07 and '16 \par
+\vspace{5mm}
+\normalsize Write in with relevant topics %%%% very rough
+ 
+<<plot10.1, echo=FALSE, fig.align='center', warning=F, fig.width=5.5, fig.height=5, fig.keep='high'>>=
+summary(lmLisa)
+@
+\end{flushleft}
+
+\newpage
+\section{Appendix}
+\begin{flushleft}
+\large 
+\vspace{5mm}
+\end{flushleft} 
+
+
+\newpage
+\section{References}
+\begin{flushleft}
+\begin{thebibliography}{9}
+
+\bibitem{Tapia Martha} 
+Tapia Martha, Marsh II George E (2004) 
+ An Instrument to Measure Mathematics Attitudes. Academic Exchange Quarterly Vol 8, issue 2 THIS IS WRONG JUST A PLACE HOLDER 
+ 
+ 
+\end{thebibliography}
+\vspace{5mm}
+\end{flushleft} 
+
+\end{document}
